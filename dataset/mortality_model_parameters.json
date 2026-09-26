@@ -1,0 +1,369 @@
+{
+  "data_type": "SYNTHETIC",
+  "random_seed": 20260924,
+  "generation_date": "2026-09-24",
+  "date_range": [
+    "2025-09-24",
+    "2026-09-23"
+  ],
+  "warmup_days": 14,
+  "model": "Negative Binomial counts (mean = base x exp(eta) x lognormal AR(1) shock); heatstroke + other components; multinomial sex-age split with Dirichlet noise",
+  "temperature_effect": {
+    "value": 0.33498296088334467,
+    "origin": "CALIBRATED",
+    "note": "beta on lag-weighted heat exposure; solved so mean relative rise in annual expected heatstroke deaths for +1C on Apr-Jun Tmax equals the paper-implied ratio 8.028/39"
+  },
+  "calibration": {
+    "target_relative_increase_per_C": 0.20584615384615385,
+    "achieved_mean": 0.2058461538461538,
+    "achieved_by_state": {
+      "Tamil Nadu": 0.42247677804489125,
+      "Kerala": 0.14253971303864743,
+      "Karnataka": 0.052521970454922684
+    },
+    "origin": "paper coefficient 8.028 (Table 4) / mean 39 (Table 1)"
+  },
+  "hazard_temperature_segments": {
+    "value": [
+      [
+        32,
+        35,
+        0.04
+      ],
+      [
+        35,
+        38,
+        0.12
+      ],
+      [
+        38,
+        40,
+        0.3
+      ],
+      [
+        40,
+        99,
+        0.55
+      ]
+    ],
+    "origin": "ASSUMPTION (convex piecewise; paper motivates thresholds at 33 and 38 C)"
+  },
+  "hazard_wbgt_segments": {
+    "value": [
+      [
+        26,
+        28,
+        0.05
+      ],
+      [
+        28,
+        30,
+        0.15
+      ],
+      [
+        30,
+        32,
+        0.35
+      ],
+      [
+        32,
+        35,
+        0.7
+      ],
+      [
+        35,
+        99,
+        1.2
+      ]
+    ],
+    "origin": "ASSUMPTION"
+  },
+  "wbgt_weight_in_exposure": 0.5,
+  "seasonality_strength": {
+    "value": 0.9,
+    "origin": "ASSUMPTION"
+  },
+  "humidity_effect": {
+    "heatstroke": 0.35,
+    "other": 0.5,
+    "origin": "ASSUMPTION"
+  },
+  "duration_effect_per_hour": {
+    "heatstroke": 0.04,
+    "other": 0.05,
+    "origin": "ASSUMPTION"
+  },
+  "night_effect": {
+    "heatstroke": 0.25,
+    "other": 0.45,
+    "origin": "ASSUMPTION"
+  },
+  "lag_effect": {
+    "weights_lag_0_1_2_3_7": {
+      "heatstroke": [
+        1.0,
+        0.6,
+        0.35,
+        0.2,
+        0.05
+      ],
+      "other": [
+        0.6,
+        0.6,
+        0.45,
+        0.3,
+        0.15
+      ]
+    },
+    "origin": "ASSUMPTION"
+  },
+  "vulnerability_effect": {
+    "heatstroke": 1.2,
+    "other": 1.5,
+    "origin": "ASSUMPTION"
+  },
+  "outdoor_effect": {
+    "heatstroke": 0.8,
+    "other": 0.3,
+    "origin": "ASSUMPTION"
+  },
+  "health_response_effects": {
+    "public_health_response": -0.35,
+    "cooling_access": -0.3,
+    "origin": "ASSUMPTION; direction supported by paper's negative health-spend/urban coefficients (not significant for totals)"
+  },
+  "dispersion_parameter": {
+    "heatstroke_nb_size": 1.5,
+    "other_nb_size": 2.0,
+    "origin": "ASSUMPTION"
+  },
+  "shock": {
+    "sd_heatstroke": 0.3,
+    "sd_other": 0.3,
+    "ar1_phi": 0.3,
+    "origin": "ASSUMPTION"
+  },
+  "other_to_heatstroke_ratio": {
+    "value": 3.0,
+    "origin": "ASSUMPTION (paper covers heatstroke only)"
+  },
+  "sex_age_shares_heatstroke": {
+    "cells": [
+      "M<30",
+      "F<30",
+      "M30-59",
+      "F30-59",
+      "M60+",
+      "F60+"
+    ],
+    "paper_table1_means": [
+      4.0,
+      1.0,
+      19.0,
+      4.0,
+      8.0,
+      3.0
+    ],
+    "origin": "PAPER (Table 1)"
+  },
+  "sex_age_shares_other": {
+    "value": [
+      0.05,
+      0.03,
+      0.27,
+      0.12,
+      0.3,
+      0.23
+    ],
+    "origin": "ASSUMPTION (older, more balanced by sex)"
+  },
+  "dirichlet_kappa": {
+    "heatstroke": 30,
+    "other": 20
+  },
+  "state_baseline": {
+    "Tamil Nadu": {
+      "annual_heatstroke_target": 24.0,
+      "calibrated_base_daily_scale": {
+        "heatstroke": 0.025084708197212816,
+        "other": 0.07288053888124596
+      },
+      "paper_cumulative_2001_2014": 228,
+      "paper_mean_per_year": 16.285714285714285,
+      "origin": "target = ASSUMPTION anchored on (not equal to) paper values"
+    },
+    "Kerala": {
+      "annual_heatstroke_target": 5.0,
+      "calibrated_base_daily_scale": {
+        "heatstroke": 0.009829131251064108,
+        "other": 0.02776949369543001
+      },
+      "paper_cumulative_2001_2014": 10,
+      "paper_mean_per_year": 0.7142857142857143,
+      "origin": "target = ASSUMPTION anchored on (not equal to) paper values"
+    },
+    "Karnataka": {
+      "annual_heatstroke_target": 12.0,
+      "calibrated_base_daily_scale": {
+        "heatstroke": 0.020851052129985188,
+        "other": 0.06851380440444019
+      },
+      "paper_cumulative_2001_2014": 97,
+      "paper_mean_per_year": 6.928571428571429,
+      "origin": "target = ASSUMPTION anchored on (not equal to) paper values"
+    }
+  },
+  "state_profiles": {
+    "Tamil Nadu": {
+      "tmax_mean": 34.0,
+      "tmax_amp": 3.0,
+      "peak": 130,
+      "sw_dip": 0.8,
+      "ne_dip": 2.0,
+      "w_dip": 1.5,
+      "anom_sd": 1.2,
+      "anom_phi": 0.65,
+      "rh_base": 68,
+      "rh_dry_amp": 10,
+      "rh_sw": 3,
+      "rh_ne": 4,
+      "dtr": 8.5,
+      "wind": 2.6,
+      "wind_sw": 0.15,
+      "sun_sw": 0.2,
+      "sun_ne": 0.3,
+      "events": 3.5,
+      "event_amp": [
+        2.0,
+        4.5
+      ],
+      "event_rh": 2.0,
+      "hw_tmax": 37.5,
+      "hw_anom": 2.0,
+      "hot_tmax": 36.5,
+      "population": 77000000,
+      "elderly": 13.0,
+      "u30": 47.0,
+      "wa": 40.0,
+      "outdoor": 0.36,
+      "urban": 55.0,
+      "healthcare": 0.78,
+      "hap": 0.6,
+      "cooling": 0.55,
+      "phr_base": 0.55,
+      "target_heatstroke": 24.0
+    },
+    "Kerala": {
+      "tmax_mean": 32.2,
+      "tmax_amp": 1.3,
+      "peak": 85,
+      "sw_dip": 3.2,
+      "ne_dip": 0.8,
+      "w_dip": 0.8,
+      "anom_sd": 0.9,
+      "anom_phi": 0.65,
+      "rh_base": 74,
+      "rh_dry_amp": 6,
+      "rh_sw": 12,
+      "rh_ne": 4,
+      "dtr": 6.5,
+      "wind": 2.2,
+      "wind_sw": 0.7,
+      "sun_sw": 0.55,
+      "sun_ne": 0.2,
+      "events": 2.0,
+      "event_amp": [
+        1.5,
+        3.0
+      ],
+      "event_rh": 0.8,
+      "hw_tmax": 35.0,
+      "hw_anom": 1.8,
+      "hot_tmax": 33.5,
+      "population": 35800000,
+      "elderly": 17.0,
+      "u30": 38.0,
+      "wa": 45.0,
+      "outdoor": 0.28,
+      "urban": 50.0,
+      "healthcare": 0.85,
+      "hap": 0.65,
+      "cooling": 0.55,
+      "phr_base": 0.6,
+      "target_heatstroke": 5.0
+    },
+    "Karnataka": {
+      "tmax_mean": 32.0,
+      "tmax_amp": 3.2,
+      "peak": 108,
+      "sw_dip": 3.0,
+      "ne_dip": 0.5,
+      "w_dip": 1.5,
+      "anom_sd": 1.5,
+      "anom_phi": 0.65,
+      "rh_base": 62,
+      "rh_dry_amp": 12,
+      "rh_sw": 18,
+      "rh_ne": 3,
+      "dtr": 10.0,
+      "wind": 2.8,
+      "wind_sw": 0.6,
+      "sun_sw": 0.45,
+      "sun_ne": 0.1,
+      "events": 3.0,
+      "event_amp": [
+        2.0,
+        4.5
+      ],
+      "event_rh": 2.5,
+      "hw_tmax": 36.5,
+      "hw_anom": 2.0,
+      "hot_tmax": 35.5,
+      "population": 68000000,
+      "elderly": 11.5,
+      "u30": 50.0,
+      "wa": 38.5,
+      "outdoor": 0.45,
+      "urban": 42.0,
+      "healthcare": 0.7,
+      "hap": 0.55,
+      "cooling": 0.5,
+      "phr_base": 0.5,
+      "target_heatstroke": 12.0
+    }
+  },
+  "similarity": {
+    "features": [
+      "max_temperature_c",
+      "mean_temperature_c",
+      "humidity_percent",
+      "wbgt_c",
+      "heat_index_c",
+      "heat_duration_hours",
+      "consecutive_heat_days"
+    ],
+    "weights": {
+      "wbgt_c": 0.25,
+      "max_temperature_c": 0.15,
+      "mean_temperature_c": 0.1,
+      "humidity_percent": 0.15,
+      "heat_index_c": 0.15,
+      "heat_duration_hours": 0.1,
+      "consecutive_heat_days": 0.1
+    },
+    "standardisation": "divide by dataset SD",
+    "score": "100*exp(-weighted RMS z-distance)"
+  },
+  "paper_reference_values": {
+    "mean_total": 39,
+    "sd_total": 53.9,
+    "min": 0,
+    "max": 418,
+    "mean_male": 31,
+    "mean_female": 8,
+    "coef_asmt_total": 8.028,
+    "table7_asmt2_total": 21.5,
+    "table6_smt_c": 7.911,
+    "table6_smt_c_sq": 0.798
+  }
+}

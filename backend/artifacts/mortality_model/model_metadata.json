@@ -1,0 +1,30 @@
+{
+  "model_name": "Ushna Kaappaan Mortality Model",
+  "model_version": "v1.0.0-synthetic-prototype",
+  "trained_at": "2026-09-25T04:15:30.292313Z",
+  "algorithm": "Ridge_Regression",
+  "dataset_source": "dataset/mortality_synthetic_daily.csv",
+  "data_type": "SYNTHETIC (Guin et al. 2025 statistical calibration)",
+  "spatial_resolution": "STATE_LEVEL_ONLY",
+  "supported_states": [
+    "Tamil Nadu",
+    "Kerala",
+    "Karnataka"
+  ],
+  "target": {
+    "name": "heat_related_mortality_rate_per_100000",
+    "unit": "deaths per 100,000 population per day",
+    "description": "Estimated daily rate of heat-related and heat-exacerbated mortality per 100,000 residents"
+  },
+  "risk_band_interpretation": {
+    "baseline": "Rate <= 0.05 per 100,000 (Typical background levels)",
+    "moderate_risk": "0.05 < Rate <= 0.15 per 100,000 (Elevated heat exposure stress)",
+    "high_risk": "0.15 < Rate <= 0.30 per 100,000 (High excess heat burden)",
+    "severe_risk": "Rate > 0.30 per 100,000 (Critical cumulative thermal load)"
+  },
+  "scientific_limitations": [
+    "Trained exclusively on synthetic calibration data; NOT official NCRB or IMD mortality data.",
+    "Produces state-level aggregated rates; MUST NOT be decomposed into district-level mortality.",
+    "Designed for early-warning and preparedness benchmarking, not individual clinical forecasting."
+  ]
+}

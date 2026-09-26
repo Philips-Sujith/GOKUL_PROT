@@ -1,0 +1,68 @@
+[
+  {
+    "category": "Extreme heat stress",
+    "min_utci": 46.0,
+    "max_utci": 100.0,
+    "severity_rank": 5,
+    "color": "#991b1b",
+    "badge_bg": "#fef2f2",
+    "badge_text": "#991b1b",
+    "badge_border": "#fecaca",
+    "description": "Critical thermal stress. Immediate physiological risk of severe heatstroke, circulatory collapse, and organ failure with even moderate physical activity."
+  },
+  {
+    "category": "Very strong heat stress",
+    "min_utci": 38.0,
+    "max_utci": 46.0,
+    "severity_rank": 4,
+    "color": "#dc2626",
+    "badge_bg": "#fff1f2",
+    "badge_text": "#be123c",
+    "badge_border": "#fecdd3",
+    "description": "Dangerous heat load. Core body temperature elevates rapidly during outdoor activity. High risk of heat exhaustion, severe cramps, and heat hyperpyrexia."
+  },
+  {
+    "category": "Strong heat stress",
+    "min_utci": 32.0,
+    "max_utci": 38.0,
+    "severity_rank": 3,
+    "color": "#ea580c",
+    "badge_bg": "#fff7ed",
+    "badge_text": "#c2410c",
+    "badge_border": "#fed7aa",
+    "description": "Substantial thermal strain. Sweating rate increases significantly; fatigue, dehydration, and reduced physical and cognitive performance occur."
+  },
+  {
+    "category": "Moderate heat stress",
+    "min_utci": 26.0,
+    "max_utci": 32.0,
+    "severity_rank": 2,
+    "color": "#eab308",
+    "badge_bg": "#fefce8",
+    "badge_text": "#a16207",
+    "badge_border": "#fef08a",
+    "description": "Noticeable heat burden for unacclimatized individuals and those engaging in strenuous physical exertion. Increased fluid requirements."
+  },
+  {
+    "category": "No thermal stress",
+    "min_utci": 9.0,
+    "max_utci": 26.0,
+    "severity_rank": 1,
+    "color": "#16a34a",
+    "badge_bg": "#f0fdf4",
+    "badge_text": "#15803d",
+    "badge_border": "#bbf7d0",
+    "description": "Thermal comfort / neutral zone. Optimal conditions for normal physiological thermoregulation and regular outdoor or indoor activities."
+  },
+  {
+    "category": "Slight cold stress",
+    "min_utci": 0.0,
+    "max_utci": 9.0,
+    "severity_rank": 0,
+    "color": "#0284c7",
+    "badge_bg": "#f0f9ff",
+    "badge_text": "#0369a1",
+    "badge_border": "#bae6fd",
+    "description": "Mild cold sensation; minimal thermal strain. Light protective clothing recommended during early mornings or elevated terrain."
+  }
+]

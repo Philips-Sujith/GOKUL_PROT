@@ -1,0 +1,51 @@
+{
+  "dataset_rows": 1095,
+  "temporal_split_date": "2026-06-24T00:00:00.000000",
+  "train_samples": 819,
+  "test_samples": 276,
+  "selected_model": "Ridge_Regression",
+  "validation_metrics": {
+    "test_rmse": 0.0004312349352038763,
+    "test_mae": 0.00026236394353004326,
+    "test_r2": 0.1893796028780086,
+    "test_pearson_corr": 0.44209865362127937,
+    "train_rmse": 0.00069690181710389
+  },
+  "all_candidate_metrics": {
+    "Ridge_Regression": {
+      "test_rmse": 0.0004312349352038763,
+      "test_mae": 0.00026236394353004326,
+      "test_r2": 0.1893796028780086,
+      "test_pearson_corr": 0.44209865362127937,
+      "train_rmse": 0.00069690181710389
+    },
+    "ElasticNet_Regression": {
+      "test_rmse": 0.0004888882425519486,
+      "test_mae": 0.0003510487471465732,
+      "test_r2": -0.041858741301374236,
+      "test_pearson_corr": NaN,
+      "train_rmse": 0.0007706575807902024
+    },
+    "Random_Forest_Regressor": {
+      "test_rmse": 0.000488440180183293,
+      "test_mae": 0.00031071280604861836,
+      "test_r2": -0.039949905140550745,
+      "test_pearson_corr": 0.18911434643114255,
+      "train_rmse": 0.0004593482803342714
+    },
+    "Gradient_Boosting_Regressor": {
+      "test_rmse": 0.0005177611821079573,
+      "test_mae": 0.00032114225647184854,
+      "test_r2": -0.16855357489173328,
+      "test_pearson_corr": 0.07835515339268645,
+      "train_rmse": 0.00033736929145682765
+    },
+    "Extra_Trees_Regressor": {
+      "test_rmse": 0.00046456733410629497,
+      "test_mae": 0.00026975167708277064,
+      "test_r2": 0.059222347239181516,
+      "test_pearson_corr": 0.28833413420695847,
+      "train_rmse": 0.0004013353158559408
+    }
+  }
+}

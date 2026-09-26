@@ -1,0 +1,666 @@
+[
+  {
+    "id": "TN-01",
+    "name": "Ariyalur",
+    "state": "Tamil Nadu",
+    "latitude": 11.1401,
+    "longitude": 79.0786,
+    "elevation": 76
+  },
+  {
+    "id": "TN-02",
+    "name": "Chengalpattu",
+    "state": "Tamil Nadu",
+    "latitude": 12.6841,
+    "longitude": 79.9836,
+    "elevation": 36
+  },
+  {
+    "id": "TN-03",
+    "name": "Chennai",
+    "state": "Tamil Nadu",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "elevation": 6
+  },
+  {
+    "id": "TN-04",
+    "name": "Coimbatore",
+    "state": "Tamil Nadu",
+    "latitude": 11.0168,
+    "longitude": 76.9558,
+    "elevation": 411
+  },
+  {
+    "id": "TN-05",
+    "name": "Cuddalore",
+    "state": "Tamil Nadu",
+    "latitude": 11.7480,
+    "longitude": 79.7714,
+    "elevation": 9
+  },
+  {
+    "id": "TN-06",
+    "name": "Dharmapuri",
+    "state": "Tamil Nadu",
+    "latitude": 12.1211,
+    "longitude": 78.1582,
+    "elevation": 468
+  },
+  {
+    "id": "TN-07",
+    "name": "Dindigul",
+    "state": "Tamil Nadu",
+    "latitude": 10.3673,
+    "longitude": 77.9803,
+    "elevation": 268
+  },
+  {
+    "id": "TN-08",
+    "name": "Erode",
+    "state": "Tamil Nadu",
+    "latitude": 11.3410,
+    "longitude": 77.7172,
+    "elevation": 183
+  },
+  {
+    "id": "TN-09",
+    "name": "Kallakurichi",
+    "state": "Tamil Nadu",
+    "latitude": 11.7383,
+    "longitude": 78.9639,
+    "elevation": 115
+  },
+  {
+    "id": "TN-10",
+    "name": "Kanchipuram",
+    "state": "Tamil Nadu",
+    "latitude": 12.8342,
+    "longitude": 79.7036,
+    "elevation": 83
+  },
+  {
+    "id": "TN-11",
+    "name": "Kanyakumari",
+    "state": "Tamil Nadu",
+    "latitude": 8.0883,
+    "longitude": 77.5385,
+    "elevation": 10
+  },
+  {
+    "id": "TN-12",
+    "name": "Karur",
+    "state": "Tamil Nadu",
+    "latitude": 10.9601,
+    "longitude": 78.0766,
+    "elevation": 122
+  },
+  {
+    "id": "TN-13",
+    "name": "Krishnagiri",
+    "state": "Tamil Nadu",
+    "latitude": 12.5186,
+    "longitude": 78.2137,
+    "elevation": 631
+  },
+  {
+    "id": "TN-14",
+    "name": "Madurai",
+    "state": "Tamil Nadu",
+    "latitude": 9.9252,
+    "longitude": 78.1198,
+    "elevation": 136
+  },
+  {
+    "id": "TN-15",
+    "name": "Mayiladuthurai",
+    "state": "Tamil Nadu",
+    "latitude": 11.1075,
+    "longitude": 79.6524,
+    "elevation": 19
+  },
+  {
+    "id": "TN-16",
+    "name": "Nagapattinam",
+    "state": "Tamil Nadu",
+    "latitude": 10.7672,
+    "longitude": 79.8449,
+    "elevation": 9
+  },
+  {
+    "id": "TN-17",
+    "name": "Namakkal",
+    "state": "Tamil Nadu",
+    "latitude": 11.2189,
+    "longitude": 78.1674,
+    "elevation": 218
+  },
+  {
+    "id": "TN-18",
+    "name": "Nilgiris",
+    "state": "Tamil Nadu",
+    "latitude": 11.4102,
+    "longitude": 76.6950,
+    "elevation": 2240
+  },
+  {
+    "id": "TN-19",
+    "name": "Perambalur",
+    "state": "Tamil Nadu",
+    "latitude": 11.2342,
+    "longitude": 78.8820,
+    "elevation": 143
+  },
+  {
+    "id": "TN-20",
+    "name": "Pudukkottai",
+    "state": "Tamil Nadu",
+    "latitude": 10.3797,
+    "longitude": 78.8208,
+    "elevation": 100
+  },
+  {
+    "id": "TN-21",
+    "name": "Ramanathapuram",
+    "state": "Tamil Nadu",
+    "latitude": 9.3639,
+    "longitude": 78.8395,
+    "elevation": 10
+  },
+  {
+    "id": "TN-22",
+    "name": "Ranipet",
+    "state": "Tamil Nadu",
+    "latitude": 12.9272,
+    "longitude": 79.3330,
+    "elevation": 160
+  },
+  {
+    "id": "TN-23",
+    "name": "Salem",
+    "state": "Tamil Nadu",
+    "latitude": 11.6643,
+    "longitude": 78.1460,
+    "elevation": 278
+  },
+  {
+    "id": "TN-24",
+    "name": "Sivaganga",
+    "state": "Tamil Nadu",
+    "latitude": 9.8433,
+    "longitude": 78.4809,
+    "elevation": 102
+  },
+  {
+    "id": "TN-25",
+    "name": "Tenkasi",
+    "state": "Tamil Nadu",
+    "latitude": 8.9594,
+    "longitude": 77.3161,
+    "elevation": 143
+  },
+  {
+    "id": "TN-26",
+    "name": "Thanjavur",
+    "state": "Tamil Nadu",
+    "latitude": 10.7870,
+    "longitude": 79.1378,
+    "elevation": 59
+  },
+  {
+    "id": "TN-27",
+    "name": "Theni",
+    "state": "Tamil Nadu",
+    "latitude": 10.0104,
+    "longitude": 77.4768,
+    "elevation": 293
+  },
+  {
+    "id": "TN-28",
+    "name": "Thoothukudi",
+    "state": "Tamil Nadu",
+    "latitude": 8.7642,
+    "longitude": 78.1348,
+    "elevation": 4
+  },
+  {
+    "id": "TN-29",
+    "name": "Tiruchirappalli",
+    "state": "Tamil Nadu",
+    "latitude": 10.7905,
+    "longitude": 78.7047,
+    "elevation": 88
+  },
+  {
+    "id": "TN-30",
+    "name": "Tirunelveli",
+    "state": "Tamil Nadu",
+    "latitude": 8.7139,
+    "longitude": 77.7567,
+    "elevation": 47
+  },
+  {
+    "id": "TN-31",
+    "name": "Tirupathur",
+    "state": "Tamil Nadu",
+    "latitude": 12.4958,
+    "longitude": 78.5678,
+    "elevation": 389
+  },
+  {
+    "id": "TN-32",
+    "name": "Tiruppur",
+    "state": "Tamil Nadu",
+    "latitude": 11.1085,
+    "longitude": 77.3411,
+    "elevation": 295
+  },
+  {
+    "id": "TN-33",
+    "name": "Tiruvallur",
+    "state": "Tamil Nadu",
+    "latitude": 13.1432,
+    "longitude": 79.9079,
+    "elevation": 40
+  },
+  {
+    "id": "TN-34",
+    "name": "Tiruvannamalai",
+    "state": "Tamil Nadu",
+    "latitude": 12.2253,
+    "longitude": 79.0747,
+    "elevation": 171
+  },
+  {
+    "id": "TN-35",
+    "name": "Tiruvarur",
+    "state": "Tamil Nadu",
+    "latitude": 10.7725,
+    "longitude": 79.6365,
+    "elevation": 10
+  },
+  {
+    "id": "TN-36",
+    "name": "Vellore",
+    "state": "Tamil Nadu",
+    "latitude": 12.9165,
+    "longitude": 79.1325,
+    "elevation": 216
+  },
+  {
+    "id": "TN-37",
+    "name": "Viluppuram",
+    "state": "Tamil Nadu",
+    "latitude": 11.9401,
+    "longitude": 79.4861,
+    "elevation": 46
+  },
+  {
+    "id": "TN-38",
+    "name": "Virudhunagar",
+    "state": "Tamil Nadu",
+    "latitude": 9.5872,
+    "longitude": 77.9514,
+    "elevation": 101
+  },
+  {
+    "id": "KL-01",
+    "name": "Alappuzha",
+    "state": "Kerala",
+    "latitude": 9.4981,
+    "longitude": 76.3388,
+    "elevation": 1
+  },
+  {
+    "id": "KL-02",
+    "name": "Ernakulam",
+    "state": "Kerala",
+    "latitude": 9.9816,
+    "longitude": 76.2999,
+    "elevation": 4
+  },
+  {
+    "id": "KL-03",
+    "name": "Idukki",
+    "state": "Kerala",
+    "latitude": 9.8500,
+    "longitude": 76.9400,
+    "elevation": 1200
+  },
+  {
+    "id": "KL-04",
+    "name": "Kannur",
+    "state": "Kerala",
+    "latitude": 11.8745,
+    "longitude": 75.3704,
+    "elevation": 14
+  },
+  {
+    "id": "KL-05",
+    "name": "Kasaragod",
+    "state": "Kerala",
+    "latitude": 12.5102,
+    "longitude": 74.9852,
+    "elevation": 19
+  },
+  {
+    "id": "KL-06",
+    "name": "Kollam",
+    "state": "Kerala",
+    "latitude": 8.8932,
+    "longitude": 76.6141,
+    "elevation": 3
+  },
+  {
+    "id": "KL-07",
+    "name": "Kottayam",
+    "state": "Kerala",
+    "latitude": 9.5916,
+    "longitude": 76.5222,
+    "elevation": 12
+  },
+  {
+    "id": "KL-08",
+    "name": "Kozhikode",
+    "state": "Kerala",
+    "latitude": 11.2588,
+    "longitude": 75.7804,
+    "elevation": 1
+  },
+  {
+    "id": "KL-09",
+    "name": "Malappuram",
+    "state": "Kerala",
+    "latitude": 11.0732,
+    "longitude": 76.0740,
+    "elevation": 40
+  },
+  {
+    "id": "KL-10",
+    "name": "Palakkad",
+    "state": "Kerala",
+    "latitude": 10.7867,
+    "longitude": 76.6548,
+    "elevation": 84
+  },
+  {
+    "id": "KL-11",
+    "name": "Pathanamthitta",
+    "state": "Kerala",
+    "latitude": 9.2648,
+    "longitude": 76.7870,
+    "elevation": 19
+  },
+  {
+    "id": "KL-12",
+    "name": "Thiruvananthapuram",
+    "state": "Kerala",
+    "latitude": 8.5241,
+    "longitude": 76.9366,
+    "elevation": 10
+  },
+  {
+    "id": "KL-13",
+    "name": "Thrissur",
+    "state": "Kerala",
+    "latitude": 10.5276,
+    "longitude": 76.2144,
+    "elevation": 3
+  },
+  {
+    "id": "KL-14",
+    "name": "Wayanad",
+    "state": "Kerala",
+    "latitude": 11.6854,
+    "longitude": 76.1320,
+    "elevation": 750
+  },
+  {
+    "id": "KA-01",
+    "name": "Bagalkote",
+    "state": "Karnataka",
+    "latitude": 16.1691,
+    "longitude": 75.6615,
+    "elevation": 533
+  },
+  {
+    "id": "KA-02",
+    "name": "Ballari",
+    "state": "Karnataka",
+    "latitude": 15.1394,
+    "longitude": 76.9214,
+    "elevation": 495
+  },
+  {
+    "id": "KA-03",
+    "name": "Belagavi",
+    "state": "Karnataka",
+    "latitude": 15.8497,
+    "longitude": 74.4977,
+    "elevation": 762
+  },
+  {
+    "id": "KA-04",
+    "name": "Bengaluru Rural",
+    "state": "Karnataka",
+    "latitude": 13.2295,
+    "longitude": 77.5670,
+    "elevation": 900
+  },
+  {
+    "id": "KA-05",
+    "name": "Bengaluru Urban",
+    "state": "Karnataka",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "elevation": 920
+  },
+  {
+    "id": "KA-06",
+    "name": "Bidar",
+    "state": "Karnataka",
+    "latitude": 17.9104,
+    "longitude": 77.5199,
+    "elevation": 615
+  },
+  {
+    "id": "KA-07",
+    "name": "Chamarajanagar",
+    "state": "Karnataka",
+    "latitude": 11.9261,
+    "longitude": 76.9437,
+    "elevation": 662
+  },
+  {
+    "id": "KA-08",
+    "name": "Chikkaballapura",
+    "state": "Karnataka",
+    "latitude": 13.4325,
+    "longitude": 77.7275,
+    "elevation": 915
+  },
+  {
+    "id": "KA-09",
+    "name": "Chikkamagaluru",
+    "state": "Karnataka",
+    "latitude": 13.3161,
+    "longitude": 75.7720,
+    "elevation": 1090
+  },
+  {
+    "id": "KA-10",
+    "name": "Chitradurga",
+    "state": "Karnataka",
+    "latitude": 14.2251,
+    "longitude": 76.3980,
+    "elevation": 732
+  },
+  {
+    "id": "KA-11",
+    "name": "Dakshina Kannada",
+    "state": "Karnataka",
+    "latitude": 12.8703,
+    "longitude": 74.8806,
+    "elevation": 22
+  },
+  {
+    "id": "KA-12",
+    "name": "Davanagere",
+    "state": "Karnataka",
+    "latitude": 14.4644,
+    "longitude": 75.9218,
+    "elevation": 602
+  },
+  {
+    "id": "KA-13",
+    "name": "Dharwad",
+    "state": "Karnataka",
+    "latitude": 15.4589,
+    "longitude": 75.0078,
+    "elevation": 750
+  },
+  {
+    "id": "KA-14",
+    "name": "Gadag",
+    "state": "Karnataka",
+    "latitude": 15.4167,
+    "longitude": 75.6333,
+    "elevation": 655
+  },
+  {
+    "id": "KA-15",
+    "name": "Hassan",
+    "state": "Karnataka",
+    "latitude": 13.0033,
+    "longitude": 76.1004,
+    "elevation": 957
+  },
+  {
+    "id": "KA-16",
+    "name": "Haveri",
+    "state": "Karnataka",
+    "latitude": 14.7954,
+    "longitude": 75.3991,
+    "elevation": 572
+  },
+  {
+    "id": "KA-17",
+    "name": "Kalaburagi",
+    "state": "Karnataka",
+    "latitude": 17.3297,
+    "longitude": 76.8343,
+    "elevation": 454
+  },
+  {
+    "id": "KA-18",
+    "name": "Kodagu",
+    "state": "Karnataka",
+    "latitude": 12.3375,
+    "longitude": 75.8069,
+    "elevation": 1150
+  },
+  {
+    "id": "KA-19",
+    "name": "Kolar",
+    "state": "Karnataka",
+    "latitude": 13.1367,
+    "longitude": 78.1291,
+    "elevation": 822
+  },
+  {
+    "id": "KA-20",
+    "name": "Koppal",
+    "state": "Karnataka",
+    "latitude": 15.3467,
+    "longitude": 76.1558,
+    "elevation": 530
+  },
+  {
+    "id": "KA-21",
+    "name": "Mandya",
+    "state": "Karnataka",
+    "latitude": 12.5218,
+    "longitude": 76.8951,
+    "elevation": 678
+  },
+  {
+    "id": "KA-22",
+    "name": "Mysuru",
+    "state": "Karnataka",
+    "latitude": 12.2958,
+    "longitude": 76.6394,
+    "elevation": 763
+  },
+  {
+    "id": "KA-23",
+    "name": "Raichur",
+    "state": "Karnataka",
+    "latitude": 16.2076,
+    "longitude": 77.3463,
+    "elevation": 407
+  },
+  {
+    "id": "KA-24",
+    "name": "Ramanagara",
+    "state": "Karnataka",
+    "latitude": 12.7150,
+    "longitude": 77.2810,
+    "elevation": 747
+  },
+  {
+    "id": "KA-25",
+    "name": "Shivamogga",
+    "state": "Karnataka",
+    "latitude": 13.9299,
+    "longitude": 75.5681,
+    "elevation": 584
+  },
+  {
+    "id": "KA-26",
+    "name": "Tumakuru",
+    "state": "Karnataka",
+    "latitude": 13.3379,
+    "longitude": 77.1173,
+    "elevation": 822
+  },
+  {
+    "id": "KA-27",
+    "name": "Udupi",
+    "state": "Karnataka",
+    "latitude": 13.3409,
+    "longitude": 74.7421,
+    "elevation": 27
+  },
+  {
+    "id": "KA-28",
+    "name": "Uttara Kannada",
+    "state": "Karnataka",
+    "latitude": 14.7937,
+    "longitude": 74.6869,
+    "elevation": 500
+  },
+  {
+    "id": "KA-29",
+    "name": "Vijayanagara",
+    "state": "Karnataka",
+    "latitude": 15.2716,
+    "longitude": 76.3888,
+    "elevation": 480
+  },
+  {
+    "id": "KA-30",
+    "name": "Vijayapura",
+    "state": "Karnataka",
+    "latitude": 16.8302,
+    "longitude": 75.7100,
+    "elevation": 595
+  },
+  {
+    "id": "KA-31",
+    "name": "Yadgir",
+    "state": "Karnataka",
+    "latitude": 16.7644,
+    "longitude": 77.1378,
+    "elevation": 389
+  }
+]

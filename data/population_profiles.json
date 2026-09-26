@@ -1,0 +1,469 @@
+[
+  {
+    "id": "general_public",
+    "name": "General Public",
+    "icon": "Users",
+    "description": "General urban and rural residents carrying out daily commutes, shopping, and regular lifestyle tasks.",
+    "vulnerability_weight": "Standard",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Life-threatening environmental heat load. Strict restriction of non-emergency movement.",
+        "precautions": [
+          "Remain indoors in shaded, ventilated, or air-cooled environments between 11:00 AM and 4:30 PM.",
+          "Drink at least 3.5 to 4.5 litres of water with ORS, lemon water, or buttermilk throughout the day.",
+          "Check on vulnerable neighbours, children, and domestic pets."
+        ],
+        "symptoms_watch": ["Throbbing headache", "Absence of sweating despite extreme heat", "Dizziness or fainting", "Confusion"]
+      },
+      "Very strong heat stress": {
+        "summary": "Dangerous heat conditions. Avoid prolonged direct sun exposure.",
+        "precautions": [
+          "Avoid direct sun exposure between 12:00 PM and 3:30 PM.",
+          "Carry a wide-brim umbrella, sunglasses, and a reusable water bottle when traveling.",
+          "Wear loose-fitting, light-coloured breathable cotton clothing."
+        ],
+        "symptoms_watch": ["Heavy sweating", "Muscle cramps in legs or abdomen", "Sudden nausea or weakness"]
+      },
+      "Strong heat stress": {
+        "summary": "Elevated thermal discomfort. Moderate hydration and sun protection required.",
+        "precautions": [
+          "Drink water at regular 30-minute intervals before feeling thirsty.",
+          "Avoid heavy caffeine, alcohol, or carbonated sugary beverages.",
+          "Take regular rest in shaded or cooler areas."
+        ],
+        "symptoms_watch": ["Mild lightheadedness", "Persistent fatigue"]
+      },
+      "Moderate heat stress": {
+        "summary": "Mild to moderate heat perception during midday hours.",
+        "precautions": [
+          "Maintain steady baseline hydration.",
+          "Use sun protection (hats, umbrellas) during peak solar hours."
+        ],
+        "symptoms_watch": ["Mild dehydration thirst"]
+      },
+      "No thermal stress": {
+        "summary": "Comfortable thermal conditions. No heat-related physiological strain.",
+        "precautions": [
+          "Enjoy outdoor activities normally.",
+          "Maintain standard dietary and hydration habits."
+        ],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Pleasant, mildly cool conditions.",
+        "precautions": ["Light jacket or wrap for early mornings or hill tracts."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "outdoor_worker",
+    "name": "Outdoor Worker",
+    "icon": "HardHat",
+    "description": "Field technicians, delivery personnel, street vendors, and general outdoor service providers.",
+    "vulnerability_weight": "High",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Mandatory stoppage of non-emergency outdoor physical labour. Extreme heatstroke risk.",
+        "precautions": [
+          "Immediately halt heavy manual field tasks between 11:00 AM and 4:00 PM.",
+          "Implement mandatory 20-minute shaded rest breaks every 40 minutes of work.",
+          "Provide chilled ORS electrolyte solutions at all work sites.",
+          "Mandatory buddy system to monitor coworkers for delirium or stumbling."
+        ],
+        "symptoms_watch": ["Cessation of sweating", "Hot red dry skin", "Slurred speech", "Loss of coordination"]
+      },
+      "Very strong heat stress": {
+        "summary": "Heavy physiological strain. Shift strenuous shifts to early morning (6-10 AM) or late evening.",
+        "precautions": [
+          "Reschedule heavy lifting or prolonged exposure away from 12:00 PM - 3:30 PM.",
+          "Mandatory 15-minute rest in shaded canopies every hour.",
+          "Consume 750ml of water/electrolytes per working hour.",
+          "Wear UV-reflective hats and wet neck towels."
+        ],
+        "symptoms_watch": ["Heat cramps", "Pale cold clammy skin", "Rapid pulse"]
+      },
+      "Strong heat stress": {
+        "summary": "Increased sweat rate and metabolic fatigue. Structured rest cycles needed.",
+        "precautions": [
+          "Enforce 10-minute shade breaks every 90 minutes.",
+          "Hydrate every 20 minutes regardless of thirst perception.",
+          "Ensure access to clean potable drinking water at workstations."
+        ],
+        "symptoms_watch": ["Excessive fatigue", "Heavy thirst", "Dark urine"]
+      },
+      "Moderate heat stress": {
+        "summary": "Manageable outdoor conditions with standard hydration practices.",
+        "precautions": [
+          "Keep water bottles accessible on delivery vehicles or field kits.",
+          "Wear breathable protective gear."
+        ],
+        "symptoms_watch": ["Mild dehydration"]
+      },
+      "No thermal stress": {
+        "summary": "Optimal conditions for outdoor work routines.",
+        "precautions": ["Standard work safety protocols."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Comfortable working weather.",
+        "precautions": ["Standard work attire."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "farmer",
+    "name": "Farmer",
+    "icon": "Tractor",
+    "description": "Agricultural cultivators, plantation workers, and irrigation labourers exposed to open sun and crop fields.",
+    "vulnerability_weight": "High",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Critical open-field thermal hazard. Postpone field tilling and chemical spraying.",
+        "precautions": [
+          "Complete agricultural tasks strictly before 10:30 AM or after 4:30 PM.",
+          "Avoid pesticide/fertilizer spraying during high heat (prevents respiratory stress).",
+          "Ensure livestock and draft animals have ample shaded shelters and clean water troughs.",
+          "Keep ORS packets and cool water jars under tree shades."
+        ],
+        "symptoms_watch": ["Rapid dizziness while bending", "Disorientation in the field", "Severe leg cramps"]
+      },
+      "Very strong heat stress": {
+        "summary": "Severe open-field heat load. Shift heavy irrigation and harvest shifts.",
+        "precautions": [
+          "Work in early morning shifts (5:30 AM to 10:30 AM).",
+          "Wear traditional cotton head wraps (thundu/gamcha) soaked in water.",
+          "Drink tender coconut water, buttermilk, and salted congee."
+        ],
+        "symptoms_watch": ["Excessive fatigue", "Throbbing temples"]
+      },
+      "Strong heat stress": {
+        "summary": "Moderate agricultural heat burden.",
+        "precautions": [
+          "Take regular breaks under field trees.",
+          "Maintain hydration every 30 minutes."
+        ],
+        "symptoms_watch": ["Mild exhaustion"]
+      },
+      "Moderate heat stress": {
+        "summary": "Normal agricultural operations with routine hydration.",
+        "precautions": ["Carry adequate drinking water to the fields."],
+        "symptoms_watch": ["Thirst"]
+      },
+      "No thermal stress": {
+        "summary": "Favourable conditions for all farming activities.",
+        "precautions": ["Standard agricultural practices."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Cool morning field conditions.",
+        "precautions": ["Light wrap for morning dews."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "construction_labourer",
+    "name": "Ground/Construction Labourer",
+    "icon": "Hammer",
+    "description": "Workers engaged in masonry, steel bending, excavation, scaffolding, and road asphalt laying.",
+    "vulnerability_weight": "Extreme",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Dangerous site conditions due to direct radiation and thermal re-radiation from concrete and asphalt.",
+        "precautions": [
+          "Enforce total stoppage of roofing, scaffolding, and asphalt pouring between 11 AM - 4 PM.",
+          "Employers must provide covered rest sheds with water-cooling fans/mist.",
+          "Provide chilled salted water / ORS free at every 50 metres on site.",
+          "Designate a trained site first-aid heat warden."
+        ],
+        "symptoms_watch": ["Confusion or irrational behaviour", "Seizures or fainting", "Hot dry skin"]
+      },
+      "Very strong heat stress": {
+        "summary": "High risk of thermal exhaustion from heavy physical exertion.",
+        "precautions": [
+          "Rotate workers every 45 minutes between high-exposure and shaded tasks.",
+          "Install temporary shade nets over outdoor mortar and cutting areas.",
+          "Mandatory 10-minute hydration pause every 45 minutes."
+        ],
+        "symptoms_watch": ["Severe muscle spasms", "Vomiting or intense nausea"]
+      },
+      "Strong heat stress": {
+        "summary": "Elevated metabolic load on building sites.",
+        "precautions": [
+          "Provide continuous water refill stations.",
+          "Encourage wearing wide brim safety hard-hat shades."
+        ],
+        "symptoms_watch": ["Excessive fatigue", "Dizziness"]
+      },
+      "Moderate heat stress": {
+        "summary": "Standard construction protocols with regular hydration checks.",
+        "precautions": ["Keep water coolers filled."],
+        "symptoms_watch": ["Thirst"]
+      },
+      "No thermal stress": {
+        "summary": "Optimal building and site conditions.",
+        "precautions": ["Standard occupational safety."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Pleasant site conditions.",
+        "precautions": ["Standard PPE."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "corporation_worker",
+    "name": "Corporation Worker",
+    "icon": "Truck",
+    "description": "Municipal sanitary workers, street sweepers, waste collectors, drainage maintenance staff, and traffic wardens.",
+    "vulnerability_weight": "High",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Urgent occupational thermal hazard for civic frontliners.",
+        "precautions": [
+          "Reschedule sweeping and door-to-door waste collection strictly to 5:30 AM - 9:30 AM.",
+          "Supply electrolyte sachets and insulated thermal water bottles at ward offices.",
+          "Civic supervisors must conduct hourly wellness checks.",
+          "Provide resting access at government clinics and urban health centres."
+        ],
+        "symptoms_watch": ["Dizziness", "Staggering gait", "Lack of sweat"]
+      },
+      "Very strong heat stress": {
+        "summary": "High heat stress during sanitation routes.",
+        "precautions": [
+          "Limit afternoon street sweeping.",
+          "Ensure light cotton reflective vests over synthetic uniforms.",
+          "Take 15-minute breaks in shaded municipal parks or bus shelters."
+        ],
+        "symptoms_watch": ["Heat cramps", "Headache"]
+      },
+      "Strong heat stress": {
+        "summary": "Increased hydration requirements on daily routes.",
+        "precautions": ["Carry at least 2 litres of water with lemon/salt on sanitation carts."],
+        "symptoms_watch": ["Fatigue"]
+      },
+      "Moderate heat stress": {
+        "summary": "Standard civic duties with hydration vigilance.",
+        "precautions": ["Drink water regularly."],
+        "symptoms_watch": ["Thirst"]
+      },
+      "No thermal stress": {
+        "summary": "Normal comfortable civic operations.",
+        "precautions": ["Standard duties."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Cool morning shifts.",
+        "precautions": ["Light warm jacket."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "it_worker",
+    "name": "IT Worker",
+    "icon": "Laptop",
+    "description": "Tech park and office professionals commuting across urban heat islands and transitioning between AC and hot outdoors.",
+    "vulnerability_weight": "Low",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Severe thermal shock risk during transit between air-conditioned buildings and scorching outdoor streets.",
+        "precautions": [
+          "Advise remote work / work-from-home where possible to avoid peak traffic commutes.",
+          "Avoid walking outdoors during lunchtime (12:00 PM - 3:30 PM).",
+          "Allow 5 minutes of acclimatization in shaded foyers before stepping from cold AC into extreme outdoor heat.",
+          "Maintain hydration; dry AC environments mask respiratory fluid loss."
+        ],
+        "symptoms_watch": ["Thermal shock headache", "Dizziness during commute", "Eye dryness"]
+      },
+      "Very strong heat stress": {
+        "summary": "Avoid lunchtime outdoor walks in open urban concrete spaces.",
+        "precautions": [
+          "Use indoor cafeterias or delivery.",
+          "Drink at least 2.5 litres of fluids even if working in cold rooms.",
+          "Keep cars shaded to prevent toxic volatile organic compound buildup inside hot vehicle cabins."
+        ],
+        "symptoms_watch": ["Tension headache", "Lethargy"]
+      },
+      "Strong heat stress": {
+        "summary": "Moderate urban commute heat.",
+        "precautions": ["Carry water bottle for evening drive/train commute."],
+        "symptoms_watch": ["Commute fatigue"]
+      },
+      "Moderate heat stress": {
+        "summary": "Comfortable indoor working day.",
+        "precautions": ["Maintain routine desk hydration."],
+        "symptoms_watch": ["None"]
+      },
+      "No thermal stress": {
+        "summary": "Optimal working weather.",
+        "precautions": ["Standard work day."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Pleasant tech park campus weather.",
+        "precautions": ["None."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "school_student",
+    "name": "School Student",
+    "icon": "GraduationCap",
+    "description": "Primary and secondary school children with immature thermoregulation and high physical play activity.",
+    "vulnerability_weight": "High",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Critical child safety hazard. Schools should declare half-day or shift to morning sessions.",
+        "precautions": [
+          "Mandatory ban on outdoor sports, assemblies, and physical training between 10:00 AM and 4:00 PM.",
+          "Keep children in well-ventilated classrooms with active ceiling fans.",
+          "Introduce hourly 'Water Bell' periods where all students pause and drink water.",
+          "Parents and school vans must ensure ventilated transport with curtains/shades."
+        ],
+        "symptoms_watch": ["Flushed red face", "Crying without tears", "Irritability or extreme lethargy", "Vomiting"]
+      },
+      "Very strong heat stress": {
+        "summary": "High heat stress for children. Cancel open-ground physical education.",
+        "precautions": [
+          "Move physical education classes indoors or to shaded auditoriums.",
+          "Ensure water coolers on campus are filled with clean filtered water.",
+          "Ensure children wear lightweight loose school uniforms without blazers or ties."
+        ],
+        "symptoms_watch": ["Dizziness during morning assembly", "Nosebleeds", "Headache"]
+      },
+      "Strong heat stress": {
+        "summary": "Moderate thermal strain on children.",
+        "precautions": [
+          "Encourage students to drink a full bottle of water during school hours.",
+          "Limit playtime to shaded tree areas."
+        ],
+        "symptoms_watch": ["Playtime exhaustion"]
+      },
+      "Moderate heat stress": {
+        "summary": "Normal school routines with hydration reminders.",
+        "precautions": ["Ensure children carry water bottles."],
+        "symptoms_watch": ["Thirst"]
+      },
+      "No thermal stress": {
+        "summary": "Perfect weather for outdoor sports and campus activities.",
+        "precautions": ["Standard school routines."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Crisp morning school weather.",
+        "precautions": ["Light sweater for morning bus stops."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "college_student",
+    "name": "College Student",
+    "icon": "BookOpen",
+    "description": "Young adults commuting across sprawling campuses, riding two-wheelers, and engaging in sports.",
+    "vulnerability_weight": "Moderate",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "Severe campus thermal strain. High risk of dehydration during two-wheeler rides.",
+        "precautions": [
+          "Reschedule inter-department sports and cultural outdoors to post-5:00 PM.",
+          "Wear UV-rated helmets with ventilated visors when riding bikes.",
+          "Hydrate with electrolyte juices between lecture halls.",
+          "Hostels should ensure open ventilation and access to cold water dispensers."
+        ],
+        "symptoms_watch": ["Blackouts or syncope", "Severe throbbing headaches", "Extreme fatigue"]
+      },
+      "Very strong heat stress": {
+        "summary": "High heat during campus commutes.",
+        "precautions": [
+          "Avoid direct midday sun on campus grounds.",
+          "Carry water and wear sunglasses/hats during commutes."
+        ],
+        "symptoms_watch": ["Post-ride dizziness", "Dehydration"]
+      },
+      "Strong heat stress": {
+        "summary": "Moderate campus heat.",
+        "precautions": ["Drink fluids regularly throughout the day."],
+        "symptoms_watch": ["Fatigue"]
+      },
+      "Moderate heat stress": {
+        "summary": "Normal campus day.",
+        "precautions": ["Stay hydrated."],
+        "symptoms_watch": ["None"]
+      },
+      "No thermal stress": {
+        "summary": "Ideal conditions for academic and sports events.",
+        "precautions": ["Enjoy campus life."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Pleasant morning college weather.",
+        "precautions": ["Light jacket."],
+        "symptoms_watch": ["None"]
+      }
+    }
+  },
+  {
+    "id": "senior_citizen",
+    "name": "Senior Citizen",
+    "icon": "HeartPulse",
+    "description": "Elderly individuals (60+ years) with reduced thirst sensation, cardiovascular vulnerability, and chronic medications.",
+    "vulnerability_weight": "Critical",
+    "advisories_by_category": {
+      "Extreme heat stress": {
+        "summary": "CRITICAL LIFE SAFETY EMERGENCY. Very high mortality vulnerability from cardiovascular collapse and heat hyperpyrexia.",
+        "precautions": [
+          "STRICTLY stay indoors in the coolest room of the house. Do NOT venture out.",
+          "Use wet sponge baths or cool foot soaks to assist physiological body cooling.",
+          "Drink water or electrolytes regularly even in the absence of thirst sensation.",
+          "Consult physician regarding dosage of diuretics or blood pressure medicines during heatwaves.",
+          "Family members must check on senior citizens at least three times daily."
+        ],
+        "symptoms_watch": [
+          "Confusion, hallucinations, or disorientation",
+          "Chest pain, fluttering pulse, or shortness of breath",
+          "Extreme weakness or inability to stand",
+          "Sudden drop in urine output"
+        ]
+      },
+      "Very strong heat stress": {
+        "summary": "Dangerous cardiovascular load on seniors. Restrict all outdoor walks.",
+        "precautions": [
+          "Shift morning walks to before 6:30 AM; cancel evening walks if ambient air is above 35°C.",
+          "Keep curtains drawn and use room fans or evaporative coolers.",
+          "Sip small amounts of water, barley water, or tender coconut water every 30 minutes."
+        ],
+        "symptoms_watch": ["Dizziness when standing up (orthostatic hypotension)", "Rapid breathing", "Muscle cramps"]
+      },
+      "Strong heat stress": {
+        "summary": "Significant thermal strain for elderly individuals.",
+        "precautions": [
+          "Avoid direct sun exposure.",
+          "Ensure comfortable light cotton loose clothing.",
+          "Keep hydration levels monitored."
+        ],
+        "symptoms_watch": ["Unusual fatigue", "Dry mouth", "Loss of appetite"]
+      },
+      "Moderate heat stress": {
+        "summary": "Mild heat conditions. Senior citizens should remain conscious of fluid intake.",
+        "precautions": ["Drink fluids regularly throughout the day."],
+        "symptoms_watch": ["Thirst", "Mild tiredness"]
+      },
+      "No thermal stress": {
+        "summary": "Pleasant, safe, and comfortable conditions for elderly wellness walks.",
+        "precautions": ["Normal healthy lifestyle routine."],
+        "symptoms_watch": ["None"]
+      },
+      "Slight cold stress": {
+        "summary": "Cool morning temperatures.",
+        "precautions": ["Warm clothing for early morning walks to protect joint comfort."],
+        "symptoms_watch": ["Joint stiffness"]
+      }
+    }
+  }
+]
