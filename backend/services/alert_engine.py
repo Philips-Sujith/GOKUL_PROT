@@ -9,6 +9,7 @@ from typing import Dict, Any, List, Optional
 import uuid
 import logging
 
+from backend.config import settings
 from backend.models import Alert, District, ThermalResult
 from backend.services.telegram_service import telegram_service
 from backend.services.weather_provider import utc_to_ist_str
@@ -105,9 +106,9 @@ class AlertEngine:
         db_session.commit()
         db_session.refresh(alert_record)
 
-        # Trigger notification if eligible
+        # Trigger notification if eligible and auto-broadcast is enabled
         delivery_results = []
-        if cls.should_trigger_notification(severity):
+        if settings.TELEGRAM_AUTO_BROADCAST and cls.should_trigger_notification(severity):
             for role in roles:
                 del_res = telegram_service.send_notification(
                     db_session=db_session,

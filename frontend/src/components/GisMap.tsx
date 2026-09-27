@@ -230,9 +230,9 @@ export const GisMap: React.FC<GisMapProps> = ({
             fillColor: catColor,
             weight: isSelected ? 3.5 : 1.2,
             opacity: 1,
-            color: isSelected ? '#0f172a' : '#ffffff',
-            dashArray: isSelected ? '' : '1',
-            fillOpacity: isSelected ? 0.92 : 0.82
+            color: isSelected ? '#0f172a' : '#334155',
+            dashArray: isSelected ? '' : '',
+            fillOpacity: isSelected ? 0.95 : 0.85
           };
         },
         onEachFeature: (feature, layer) => {

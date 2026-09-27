@@ -24,6 +24,7 @@ class Settings:
     # Telegram
     TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     TELEGRAM_CHAT_ID: str = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+    TELEGRAM_AUTO_BROADCAST: bool = os.getenv("TELEGRAM_AUTO_BROADCAST", "false").lower() in ("true", "1", "yes")
     
     # Admin Credentials
     ADMIN_USERNAME: str = os.getenv("ADMIN_USERNAME", "admin")
