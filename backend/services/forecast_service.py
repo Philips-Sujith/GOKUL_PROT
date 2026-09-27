@@ -22,12 +22,27 @@ IST_TZ = timezone(timedelta(hours=5, minutes=30))
 def get_ist_now() -> datetime:
     return datetime.now(timezone.utc).astimezone(IST_TZ)
 
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
 class ForecastService:
     def __init__(self, base_url: str = settings.OPEN_METEO_BASE_URL, timeout_sec: int = 20, cache_ttl_seconds: int = 3600):
         self.base_url = base_url
         self.timeout_sec = timeout_sec
         self.cache_ttl_seconds = cache_ttl_seconds
         self.session = requests.Session()
+        
+        # Configure automatic exponential backoff for transient 503/429/5xx gateway hiccups
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504],
+            raise_on_status=False
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
+        
         self.session.headers.update({
             "User-Agent": "UshnaKaappaan-HeatEarlyWarning/1.0 (3-Day-Forecast; Contact: admin@ushna.org)",
             "Accept": "application/json"

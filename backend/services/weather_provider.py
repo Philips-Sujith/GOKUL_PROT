@@ -29,11 +29,26 @@ class WeatherDataProvider(ABC):
         """Fetch weather observations for a list of districts. Returns mapping of district_id -> observation."""
         pass
 
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
 class OpenMeteoWeatherProvider(WeatherDataProvider):
     def __init__(self, base_url: str = settings.OPEN_METEO_BASE_URL, timeout_sec: int = 15):
         self.base_url = base_url
         self.timeout_sec = timeout_sec
         self.session = requests.Session()
+        
+        # Configure automatic exponential backoff for transient 503/429/5xx gateway hiccups
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504],
+            raise_on_status=False
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
+        
         self.session.headers.update({
             "User-Agent": "UshnaKaappaan-HeatEarlyWarning/1.0 (Open-Research-Prototype; Contact: admin@ushna.org)",
             "Accept": "application/json"
@@ -86,7 +101,7 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
             data = resp.json()
             return self._parse_current_payload(district["id"], data, dt_utc)
         except Exception as e:
-            logger.error(f"Error fetching weather for district {district.get('name')}: {e}")
+            logger.warning(f"Weather fetch notice for district {district.get('name')}: {e}")
             return {
                 "district_id": district["id"],
                 "timestamp_utc": dt_utc,
@@ -139,11 +154,11 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
                         results[district["id"]] = self.fetch_district_weather(district)
                         
             except Exception as e:
-                logger.error(f"Batch fetch error for batch {i//batch_size + 1}: {e}")
+                logger.warning(f"Batch fetch notice for batch {i//batch_size + 1}: {e}")
                 for district in batch:
                     results[district["id"]] = self.fetch_district_weather(district)
                     
-            time.sleep(0.15) # gentle pacing between batches
+            time.sleep(0.20) # gentle pacing between batches
                     
         return results
 

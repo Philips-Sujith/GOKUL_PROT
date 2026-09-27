@@ -76,12 +76,12 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
       </div>
 
       {/* Hero Metric: UTCI & Human Thermal Stress Visual */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
+      <div className="space-y-4">
         
         {/* Primary UTCI Hero Value + Human Avatar Representation */}
-        <div className="md:col-span-6 bg-slate-50/80 rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
+        <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1.5 font-bold tracking-wide text-slate-700">
               <Thermometer className="w-4 h-4 text-teal-600" />
               CURRENT HUMAN THERMAL STRESS
             </span>
@@ -90,17 +90,22 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center my-1">
-            {/* Left: Numerical UTCI and category badge */}
-            <div className="sm:col-span-7 flex flex-col justify-center">
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-extrabold text-slate-900 tracking-tight">
-                  {thermal.utci_c.toFixed(1)}
+          <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between gap-4 pt-1">
+            {/* LEFT REGION (58% width on desktop) */}
+            <div className="w-full sm:w-[58%] flex flex-col justify-between space-y-2.5">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                  CALCULATED UTCI
                 </span>
-                <span className="text-xl font-bold text-slate-500">°C</span>
+                <div className="flex items-baseline gap-2 mt-0.5">
+                  <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-mono">
+                    {thermal.utci_c.toFixed(1)}
+                  </span>
+                  <span className="text-lg font-bold text-slate-500">°C</span>
+                </div>
               </div>
               
-              <div className="mt-2.5">
+              <div>
                 <span 
                   className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border"
                   style={{
@@ -109,28 +114,29 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
                     borderColor: utciCat?.badge_border || '#fecaca'
                   }}
                 >
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  {utciCat?.category || 'Calculating'}
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{utciCat?.category || 'Calculating'}</span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium mt-2 leading-tight">
+              
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
                 Current conditions indicate {utciCat?.category?.toLowerCase() || 'thermal strain'}.
               </p>
             </div>
 
-            {/* Right: Human Visual Avatar */}
-            <div className="sm:col-span-5 flex justify-center">
+            {/* RIGHT REGION (42% width on desktop) */}
+            <div className="w-full sm:w-[42%] flex justify-center items-center">
               <HumanThermalAvatar
                 utci={thermal.utci_c}
                 categoryName={utciCat?.category || 'Moderate'}
-                className="w-full max-w-[145px]"
+                className="w-full"
               />
             </div>
           </div>
         </div>
 
         {/* Category Description & Scientific Explanation */}
-        <div className="md:col-span-6 bg-white rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-4 border border-slate-200">
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
               <Activity className="w-3.5 h-3.5 text-teal-600" />

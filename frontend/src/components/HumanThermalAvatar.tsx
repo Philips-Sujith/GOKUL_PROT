@@ -14,8 +14,8 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
   // Determine state index based on project UTCI bands:
   // State 0: < 26°C (Comfortable / Relaxed)
   // State 1: 26 to < 32°C (Warm / Mild Discomfort)
-  // State 2: 32 to < 38°C (Moderate to Strong Heat Stress / Noticeable sweating / wiping brow)
-  // State 3: 38 to < 46°C (Very Strong Heat Stress / Obvious sweating & fanning)
+  // State 2: 32 to < 38°C (Noticeable Heat Stress / sweating / wiping brow)
+  // State 3: 38 to < 46°C (Strong Heat Stress / sweating & fanning)
   // State 4: >= 46°C (Extreme Heat Stress / Severe Heat Emergency Posture)
   let stateIndex = 0;
   if (utci >= 46.0) {
@@ -34,16 +34,14 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
   const stateConfigs = [
     {
       label: 'Comfortable & Relaxed',
-      badgeText: 'Low / No Thermal Discomfort',
       themeColor: '#16a34a',
       bgGlow: 'radial-gradient(circle, rgba(22, 163, 74, 0.12) 0%, rgba(240, 253, 244, 0) 70%)',
       accentBorder: 'border-emerald-200',
-      tagBg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      tagBg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
       description: 'Human thermal comfort optimal; minimal physiological strain.'
     },
     {
       label: 'Warm & Mild Strain',
-      badgeText: 'Moderate Thermal Sensation',
       themeColor: '#ca8a04',
       bgGlow: 'radial-gradient(circle, rgba(202, 138, 4, 0.14) 0%, rgba(254, 252, 232, 0) 70%)',
       accentBorder: 'border-yellow-200',
@@ -51,17 +49,15 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
       description: 'Elevated ambient warmth; slight thermal discomfort beginning.'
     },
     {
-      label: 'Noticeably Heat Stressed',
-      badgeText: 'Active Thermoregulation',
+      label: 'Noticeable Heat Stress',
       themeColor: '#ea580c',
       bgGlow: 'radial-gradient(circle, rgba(234, 88, 12, 0.15) 0%, rgba(255, 247, 237, 0) 70%)',
       accentBorder: 'border-orange-200',
       tagBg: 'bg-orange-50 text-orange-800 border-orange-200',
-      description: 'Noticeable heat discomfort; sweating and wiping brow.'
+      description: 'Active thermoregulation; noticeable sweating and seeking shade.'
     },
     {
       label: 'Strong Heat Stress',
-      badgeText: 'High Physiological Strain',
       themeColor: '#dc2626',
       bgGlow: 'radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, rgba(254, 242, 242, 0) 70%)',
       accentBorder: 'border-red-200',
@@ -70,12 +66,11 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
     },
     {
       label: 'Extreme Heat Stress',
-      badgeText: 'Severe Thermal Emergency',
       themeColor: '#991b1b',
       bgGlow: 'radial-gradient(circle, rgba(153, 27, 27, 0.22) 0%, rgba(254, 242, 242, 0) 70%)',
       accentBorder: 'border-rose-300',
       tagBg: 'bg-rose-100 text-rose-900 border-rose-300',
-      description: 'Extreme thermal conditions; high risk of heat exhaustion.'
+      description: 'Extreme thermal conditions; high risk of heat emergency.'
     }
   ];
 
@@ -83,7 +78,7 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
 
   return (
     <div
-      className={`relative flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-500 bg-white shadow-xs ${currentConfig.accentBorder} ${className}`}
+      className={`relative flex flex-col items-center justify-between p-3 rounded-xl border transition-all duration-500 bg-white shadow-2xs ${currentConfig.accentBorder} ${className}`}
       role="img"
       aria-label={`Human thermal visual representation: ${currentConfig.label} at UTCI ${utci.toFixed(1)}°C (${categoryName})`}
     >
@@ -94,10 +89,10 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
       />
 
       {/* SVG Character / Human Illustration */}
-      <div className="relative w-28 h-36 flex items-center justify-center">
+      <div className="relative w-20 h-28 sm:w-22 sm:h-30 flex items-center justify-center shrink-0">
         <svg
           viewBox="0 0 160 200"
-          className="w-full h-full drop-shadow-xs transition-transform duration-500"
+          className="w-full h-full drop-shadow-2xs transition-transform duration-500"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -180,57 +175,43 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
 
             {/* Eyes & Eyebrows */}
             {stateIndex === 0 && (
-              // State 0: Relaxed, pleasant smile
               <>
-                {/* Eyes */}
                 <ellipse cx="73" cy="50" rx="2.5" ry="3" fill="#1e293b" />
                 <ellipse cx="87" cy="50" rx="2.5" ry="3" fill="#1e293b" />
-                {/* Eyebrows */}
                 <path d="M 70 44 Q 73 42 77 44" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" fill="none" />
                 <path d="M 83 44 Q 87 42 90 44" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                {/* Gentle Smile */}
                 <path d="M 74 62 Q 80 67 86 62" stroke="#9a3412" strokeWidth="1.8" strokeLinecap="round" fill="none" />
               </>
             )}
 
             {stateIndex === 1 && (
-              // State 1: Warm, neutral expression
               <>
                 <ellipse cx="73" cy="50" rx="2.5" ry="2.8" fill="#1e293b" />
                 <ellipse cx="87" cy="50" rx="2.5" ry="2.8" fill="#1e293b" />
                 <path d="M 70 44 L 76 44" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
                 <path d="M 84 44 L 90 44" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
-                {/* Straight neutral mouth */}
                 <path d="M 75 63 L 85 63" stroke="#9a3412" strokeWidth="1.8" strokeLinecap="round" />
               </>
             )}
 
             {stateIndex === 2 && (
-              // State 2: Heat stress, squinting, slight frown
               <>
-                {/* Squinting eyes */}
                 <path d="M 71 51 Q 74 48 77 51" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" fill="none" />
                 <path d="M 83 51 Q 86 48 89 51" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" fill="none" />
-                {/* Inward tilted eyebrows */}
                 <path d="M 70 46 L 77 43" stroke="#334155" strokeWidth="1.8" strokeLinecap="round" />
                 <path d="M 90 46 L 83 43" stroke="#334155" strokeWidth="1.8" strokeLinecap="round" />
-                {/* Strained mouth */}
                 <path d="M 75 64 Q 80 60 85 64" stroke="#9a3412" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-                {/* Sweat droplet on forehead */}
                 <path d="M 68 40 Q 66 43 68 45 Q 70 43 68 40 Z" fill="url(#sweatGrad)" />
               </>
             )}
 
             {stateIndex === 3 && (
-              // State 3: Strong heat stress, panting/open mouth, multiple sweat drops
               <>
                 <path d="M 71 52 Q 74 49 77 52" stroke="#1e293b" strokeWidth="2.2" strokeLinecap="round" fill="none" />
                 <path d="M 83 52 Q 86 49 89 52" stroke="#1e293b" strokeWidth="2.2" strokeLinecap="round" fill="none" />
                 <path d="M 69 47 L 77 43" stroke="#334155" strokeWidth="2" strokeLinecap="round" />
                 <path d="M 91 47 L 83 43" stroke="#334155" strokeWidth="2" strokeLinecap="round" />
-                {/* Panting open mouth */}
                 <ellipse cx="80" cy="64" rx="4" ry="3" fill="#881337" />
-                {/* Sweat drops */}
                 <path d="M 66 38 Q 64 42 66 45 Q 68 42 66 38 Z" fill="url(#sweatGrad)" />
                 <path d="M 94 42 Q 92 46 94 49 Q 96 46 94 42 Z" fill="url(#sweatGrad)" />
                 <path d="M 63 56 Q 61 59 63 62 Q 65 59 63 56 Z" fill="url(#sweatGrad)" />
@@ -238,15 +219,12 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
             )}
 
             {stateIndex === 4 && (
-              // State 4: Extreme stress, exhausted posture, heavy perspiration
               <>
                 <path d="M 70 53 Q 74 50 78 53" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                 <path d="M 82 53 Q 86 50 90 53" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                 <path d="M 68 48 L 78 43" stroke="#1e293b" strokeWidth="2.2" strokeLinecap="round" />
                 <path d="M 92 48 L 82 43" stroke="#1e293b" strokeWidth="2.2" strokeLinecap="round" />
-                {/* Gaspeing mouth */}
                 <ellipse cx="80" cy="65" rx="5.5" ry="4" fill="#7f1d1d" />
-                {/* Heavy sweat dripping */}
                 <path d="M 64 36 Q 61 41 64 45 Q 67 41 64 36 Z" fill="url(#sweatGrad)" />
                 <path d="M 96 38 Q 93 43 96 47 Q 99 43 96 38 Z" fill="url(#sweatGrad)" />
                 <path d="M 61 54 Q 58 58 61 62 Q 64 58 61 54 Z" fill="url(#sweatGrad)" />
@@ -255,9 +233,8 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
             )}
           </g>
 
-          {/* Arms and Posture depending on state */}
+          {/* Arms and Posture */}
           {stateIndex <= 1 && (
-            // State 0 & 1: Arms relaxed at side
             <>
               <path d="M 60 90 L 48 130" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" />
               <path d="M 100 90 L 112 130" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" />
@@ -265,49 +242,39 @@ export const HumanThermalAvatar: React.FC<HumanThermalAvatarProps> = ({
           )}
 
           {stateIndex === 2 && (
-            // State 2: One arm wiping forehead, one at side
             <>
-              {/* Left arm wiping brow */}
               <path d="M 60 92 Q 44 80 62 48" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" fill="none" />
               <circle cx="64" cy="46" r="5" fill="url(#skinGrad)" />
-              {/* Right arm at side */}
               <path d="M 100 90 L 112 130" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" />
             </>
           )}
 
           {stateIndex === 3 && (
-            // State 3: Arm wiping brow + other arm fanning self
             <>
-              {/* Left arm wiping brow */}
               <path d="M 60 92 Q 42 78 64 46" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" fill="none" />
               <circle cx="66" cy="44" r="5" fill="url(#skinGrad)" />
-              {/* Right arm fanning with folded paper/hand */}
               <path d="M 100 90 Q 120 105 110 80" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" fill="none" />
-              {/* Small hand fan */}
               <path d="M 108 76 L 122 66 L 126 78 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1" />
             </>
           )}
 
           {stateIndex === 4 && (
-            // State 4: Both hands shielding head / holding neck in severe heat
             <>
-              {/* Left hand shielding forehead */}
               <path d="M 60 94 Q 40 70 70 42" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" fill="none" />
-              {/* Right hand on chest/neck */}
               <path d="M 100 94 Q 115 85 86 86" stroke="url(#skinGrad)" strokeWidth="8" strokeLinecap="round" fill="none" />
             </>
           )}
         </svg>
       </div>
 
-      {/* State Caption & Subtle Physiological Label */}
-      <div className="mt-2 text-center w-full">
+      {/* State Caption & Physiological Label (Positioned cleanly below the illustration) */}
+      <div className="mt-2 text-center w-full flex flex-col items-center">
         <span
-          className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wide ${currentConfig.tagBg}`}
+          className={`inline-block text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full border tracking-wide text-center leading-tight ${currentConfig.tagBg}`}
         >
           {currentConfig.label}
         </span>
-        <p className="text-[10px] text-slate-500 font-medium mt-1 leading-tight max-w-[130px] mx-auto">
+        <p className="text-[10px] text-slate-500 font-medium mt-1 leading-snug text-center max-w-[190px]">
           {currentConfig.description}
         </p>
       </div>

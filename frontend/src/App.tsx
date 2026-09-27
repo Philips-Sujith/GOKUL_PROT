@@ -26,6 +26,7 @@ import { MortalityContextCard } from './components/MortalityContextCard';
 import { DistrictsTable } from './components/DistrictsTable';
 import { AdminPortal } from './components/AdminPortal';
 import { ReportModal } from './components/ReportModal';
+import { SeventyTwoHourTrendCard } from './components/SeventyTwoHourTrendCard';
 
 export const App: React.FC = () => {
   // Navigation tab: 'public' | 'admin'
@@ -129,6 +130,9 @@ export const App: React.FC = () => {
     }
   };
 
+  // Derive high-risk priority districts count using the authoritative UTCI >= 38.0°C threshold (same as Admin Triage)
+  const highRiskDistrictsCount = districts.filter(d => (d.thermal?.utci_c || 0) >= 38.0).length;
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-900">
       
@@ -171,11 +175,13 @@ export const App: React.FC = () => {
               }`}
             >
               <span>Admin Taskforce Dashboard</span>
-              {alerts.length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-mono">
-                  {alerts.length}
-                </span>
-              )}
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono ${
+                highRiskDistrictsCount > 0 
+                  ? 'bg-rose-500 text-white' 
+                  : 'bg-slate-200 text-slate-700'
+              }`}>
+                {highRiskDistrictsCount}
+              </span>
             </button>
           </div>
 
@@ -190,12 +196,16 @@ export const App: React.FC = () => {
             
             {/* Top Grid: GIS Map (Left 7) + Selected District Card (Right 5) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-7 space-y-6">
                 <GisMap
                   districts={districts}
                   selectedDistrictId={selectedDistrictId}
                   onSelectDistrict={handleSelectDistrict}
                   mode={currentMode}
+                />
+                <SeventyTwoHourTrendCard
+                  districtId={selectedDistrictDetail?.id || selectedDistrictId}
+                  districtName={selectedDistrictDetail?.name || 'Selected District'}
                 />
               </div>
 
