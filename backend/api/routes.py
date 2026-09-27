@@ -519,11 +519,15 @@ def get_alerts(limit: int = 50, db: Session = Depends(get_db)):
 
 @router.post("/admin/login")
 def admin_login(req: LoginRequest):
-    """Simple prototype admin authentication."""
+    """Admin authentication using environment credentials and JWT_SECRET signed token."""
     if req.username == settings.ADMIN_USERNAME and req.password == settings.ADMIN_PASSWORD:
+        import hmac
+        import hashlib
+        token_payload = f"{req.username}:{int(datetime.now(timezone.utc).timestamp())}"
+        signed_token = hmac.new(settings.JWT_SECRET.encode("utf-8"), token_payload.encode("utf-8"), hashlib.sha256).hexdigest()
         return {
             "status": "SUCCESS",
-            "token": "ushna-admin-auth-token-2026",
+            "token": signed_token,
             "user": {
                 "username": req.username,
                 "role": "SUPERADMIN",

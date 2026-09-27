@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: ushna-kaappaan
+    runtime: docker
+    plan: free
+    region: singapore # Optimal low-latency region for South India (Tamil Nadu, Kerala, Karnataka)
+    branch: main
+    dockerfilePath: Dockerfile
+    healthCheckPath: /api/system/status
+    envVars:
+      - key: APP_MODE
+        value: LIVE
+      - key: DATABASE_URL
+        value: sqlite:///./ushna_kaappaan.db
+      - key: OPEN_METEO_BASE_URL
+        value: https://api.open-meteo.com/v1/forecast
+      - key: WEATHER_REFRESH_INTERVAL_HOURS
+        value: "2"
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TELEGRAM_AUTO_BROADCAST
+        value: "false"
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false

@@ -225,15 +225,14 @@ class MortalityInferenceService:
         raw_pred = float(self.pipeline.predict(df_features)[0])
         pred_rate_per_100k = max(0.0, raw_pred)
         
-        # Prototype application risk categorization (derived from synthetic dataset distribution baseline)
-        # Note: Application logic thresholds for benchmarking, not authoritative clinical standards.
-        if pred_rate_per_100k >= 0.00030:
+        # Prototype application risk categorization (matching model_metadata.json risk_band_interpretation)
+        if pred_rate_per_100k > 0.30:
             risk_context = "Severe Cumulative Heat Risk"
             badge_color = "red"
-        elif pred_rate_per_100k >= 0.00015:
+        elif pred_rate_per_100k > 0.15:
             risk_context = "High Heat-Related Mortality Risk"
             badge_color = "orange"
-        elif pred_rate_per_100k >= 0.00005:
+        elif pred_rate_per_100k > 0.05:
             risk_context = "Elevated Mortality Risk Context"
             badge_color = "amber"
         else:
