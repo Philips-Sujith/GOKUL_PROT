@@ -22,6 +22,7 @@ from backend.services.alert_engine import alert_engine
 from backend.services.telegram_service import telegram_service
 from backend.services.demo_scenarios import demo_engine, DEMO_SCENARIOS
 from backend.services.scheduler import scheduler_instance
+from backend.services.forecast_service import forecast_service
 
 logger = logging.getLogger("ushna.api")
 router = APIRouter(prefix="/api")
@@ -250,6 +251,87 @@ def get_district_details(district_id: str, db: Session = Depends(get_db)):
         "district": data,
         "history_trend": history,
         "mode": mode
+    }
+
+@router.get("/forecast/district/{district_id}")
+def get_district_forecast(district_id: str, db: Session = Depends(get_db)):
+    """
+    Returns 3-day human thermal stress forecast for a specific district.
+    Runs ECMWF thermofeel MRT & UTCI calculation over Open-Meteo 3-day hourly forecast.
+    """
+    mode = get_current_mode()
+    d = db.query(District).filter(District.id == district_id).first()
+    if not d:
+        raise HTTPException(status_code=404, detail="District not found.")
+        
+    district_dict = {
+        "id": d.id, "name": d.name, "state": d.state,
+        "latitude": d.latitude, "longitude": d.longitude, "elevation": d.elevation
+    }
+    
+    is_demo = (mode == "DEMO")
+    demo_scenario = runtime_state.get("demo_scenario", "HIGH_HEAT_STRESS")
+    
+    forecast_data = forecast_service.fetch_district_forecast(
+        district=district_dict,
+        is_demo=is_demo,
+        demo_scenario=demo_scenario
+    )
+    
+    return {
+        "mode": mode,
+        "forecast": forecast_data
+    }
+
+@router.get("/forecast/all")
+def get_all_districts_forecast(state: Optional[str] = None, db: Session = Depends(get_db)):
+    """
+    Returns 3-day human thermal stress forecast summaries for all 83 districts.
+    """
+    mode = get_current_mode()
+    query = db.query(District)
+    if state:
+        query = query.filter(District.state == state)
+    districts = query.all()
+    
+    district_dicts = [
+        {
+            "id": d.id, "name": d.name, "state": d.state,
+            "latitude": d.latitude, "longitude": d.longitude, "elevation": d.elevation
+        }
+        for d in districts
+    ]
+    
+    is_demo = (mode == "DEMO")
+    demo_scenario = runtime_state.get("demo_scenario", "HIGH_HEAT_STRESS")
+    
+    forecasts = forecast_service.fetch_all_forecasts(
+        districts=district_dicts,
+        is_demo=is_demo,
+        demo_scenario=demo_scenario
+    )
+    
+    # Format list for admin and public consume
+    forecast_list = []
+    for d in districts:
+        if d.id in forecasts:
+            f_item = forecasts[d.id]
+            forecast_list.append({
+                "district_id": d.id,
+                "district_name": d.name,
+                "state": d.state,
+                "latitude": d.latitude,
+                "longitude": d.longitude,
+                "forecast_generated_at": f_item.get("forecast_generated_at"),
+                "data_quality": f_item.get("data_quality", "VALID"),
+                "outlook_summary": f_item.get("outlook_summary"),
+                "days": f_item.get("days", [])
+            })
+            
+    return {
+        "total_districts": len(forecast_list),
+        "mode": mode,
+        "forecasts": forecast_list
     }
 
 @router.get("/thermal/latest")

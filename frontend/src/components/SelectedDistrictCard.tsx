@@ -9,10 +9,13 @@ import {
   Compass, 
   Gauge, 
   AlertTriangle,
-  HelpCircle
+  HelpCircle,
+  UserCheck
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { DistrictSummary } from '../types';
+import { HumanThermalAvatar } from './HumanThermalAvatar';
+import { ThreeDayForecastCard } from './ThreeDayForecastCard';
 
 interface SelectedDistrictCardProps {
   district: DistrictSummary | null;
@@ -72,64 +75,83 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
         </span>
       </div>
 
-      {/* Hero Metric: UTCI & Category */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+      {/* Hero Metric: UTCI & Human Thermal Stress Visual */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
         
-        {/* Primary UTCI Hero Value */}
-        <div className="md:col-span-5 bg-slate-50/80 rounded-xl p-4 border border-slate-200 flex flex-col justify-center">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+        {/* Primary UTCI Hero Value + Human Avatar Representation */}
+        <div className="md:col-span-6 bg-slate-50/80 rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
             <span className="flex items-center gap-1">
               <Thermometer className="w-4 h-4 text-teal-600" />
-              HUMAN THERMAL STRESS (UTCI)
+              CURRENT HUMAN THERMAL STRESS
             </span>
             <span title="Universal Thermal Climate Index calculated via ECMWF thermofeel polynomial" className="cursor-help text-slate-400">
               <HelpCircle className="w-3.5 h-3.5" />
             </span>
           </div>
 
-          <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              {thermal.utci_c.toFixed(1)}
-            </span>
-            <span className="text-lg font-bold text-slate-500">°C</span>
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center my-1">
+            {/* Left: Numerical UTCI and category badge */}
+            <div className="sm:col-span-7 flex flex-col justify-center">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-4xl font-extrabold text-slate-900 tracking-tight">
+                  {thermal.utci_c.toFixed(1)}
+                </span>
+                <span className="text-xl font-bold text-slate-500">°C</span>
+              </div>
+              
+              <div className="mt-2.5">
+                <span 
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border"
+                  style={{
+                    backgroundColor: utciCat?.badge_bg || '#fef2f2',
+                    color: utciCat?.badge_text || '#991b1b',
+                    borderColor: utciCat?.badge_border || '#fecaca'
+                  }}
+                >
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  {utciCat?.category || 'Calculating'}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-medium mt-2 leading-tight">
+                Current conditions indicate {utciCat?.category?.toLowerCase() || 'thermal strain'}.
+              </p>
+            </div>
 
-          {/* Category Badge */}
-          <div className="mt-3">
-            <span 
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border"
-              style={{
-                backgroundColor: utciCat?.badge_bg || '#fef2f2',
-                color: utciCat?.badge_text || '#991b1b',
-                borderColor: utciCat?.badge_border || '#fecaca'
-              }}
-            >
-              <AlertTriangle className="w-3.5 h-3.5" />
-              {utciCat?.category || 'Calculating'}
-            </span>
+            {/* Right: Human Visual Avatar */}
+            <div className="sm:col-span-5 flex justify-center">
+              <HumanThermalAvatar
+                utci={thermal.utci_c}
+                categoryName={utciCat?.category || 'Moderate'}
+                className="w-full max-w-[145px]"
+              />
+            </div>
           </div>
         </div>
 
         {/* Category Description & Scientific Explanation */}
-        <div className="md:col-span-7 bg-white rounded-xl p-4 border border-slate-200">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-            Physiological Interpretation
-          </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            {utciCat?.description}
-          </p>
+        <div className="md:col-span-6 bg-white rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5 text-teal-600" />
+              Physiological Heat Burden
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {utciCat?.description}
+            </p>
+          </div>
 
           <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-slate-50 p-2 rounded border border-slate-200/60">
-              <span className="text-slate-500 block text-[11px]">Mean Radiant Temp (MRT):</span>
-              <strong className="text-slate-900 font-semibold text-sm">{thermal.mrt_c.toFixed(1)}°C</strong>
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
+              <span className="text-slate-500 block text-[11px] font-medium">Mean Radiant Temp (MRT):</span>
+              <strong className="text-slate-900 font-bold text-sm">{thermal.mrt_c.toFixed(1)}°C</strong>
               <span className="text-[10px] text-teal-700 font-medium block mt-0.5">
                 (+{radiationDelta > 0 ? radiationDelta.toFixed(1) : '0.0'}°C radiation load)
               </span>
             </div>
-            <div className="bg-slate-50 p-2 rounded border border-slate-200/60">
-              <span className="text-slate-500 block text-[11px]">Ambient Air Temp:</span>
-              <strong className="text-slate-900 font-semibold text-sm">{weather.temperature_c.toFixed(1)}°C</strong>
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
+              <span className="text-slate-500 block text-[11px] font-medium">Ambient Air Temp:</span>
+              <strong className="text-slate-900 font-bold text-sm">{weather.temperature_c.toFixed(1)}°C</strong>
               <span className="text-[10px] text-slate-500 font-medium block mt-0.5">
                 2m dry bulb thermometer
               </span>
@@ -138,6 +160,12 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
         </div>
 
       </div>
+
+      {/* Feature 2: 3-Day Human Thermal Stress Forecast Outlook */}
+      <ThreeDayForecastCard
+        districtId={district.id}
+        districtName={district.name}
+      />
 
       {/* Environmental Metrics Grid */}
       <div>

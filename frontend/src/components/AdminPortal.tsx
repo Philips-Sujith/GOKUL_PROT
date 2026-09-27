@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { DistrictSummary, AlertItem, TelegramDeliveryItem, SystemStatus } from '../types';
 import { adminLogin, sendManualEscalation, generateReport } from '../services/api';
+import { AdminForecastTable } from './AdminForecastTable';
 
 interface AdminPortalProps {
   districts: DistrictSummary[];
@@ -251,6 +252,13 @@ ${customAdvisory}
           </button>
         </div>
       </div>
+
+      {/* Feature 2: 3-Day District Heat-Stress Forecast Table */}
+      <AdminForecastTable 
+        onSelectDistrictForEscalation={(distId) => {
+          setSelectedDistrictId(distId);
+        }}
+      />
 
       {/* Admin Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

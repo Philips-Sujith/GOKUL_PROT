@@ -146,3 +146,46 @@ export interface SystemStatus {
     bot_status: string;
   };
 }
+
+export interface DayForecast {
+  day_label: string; // "Today", "Tomorrow", "Day 3"
+  date: string; // YYYY-MM-DD
+  peak_utci_c: number;
+  peak_time_ist: string; // e.g. "14:00 IST"
+  category_info: UTCICategoryInfo;
+  peak_mrt_c?: number;
+  peak_temperature_c?: number;
+  peak_relative_humidity?: number;
+  hourly_summary?: Array<{
+    time_ist: string;
+    utci_c: number;
+    temp_c: number;
+    category: string;
+  }>;
+  data_quality?: string;
+}
+
+export interface DistrictForecastData {
+  district_id: string;
+  district_name: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  forecast_generated_at: string;
+  source: string;
+  data_quality: string;
+  outlook_summary: string;
+  days: DayForecast[];
+}
+
+export interface DistrictForecastOverviewItem {
+  district_id: string;
+  district_name: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  forecast_generated_at: string;
+  data_quality: string;
+  outlook_summary?: string;
+  days: DayForecast[];
+}

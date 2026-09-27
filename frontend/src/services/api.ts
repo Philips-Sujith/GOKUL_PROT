@@ -111,3 +111,16 @@ export async function generateReport(districtId?: string, state?: string): Promi
   if (!res.ok) throw new Error('Failed to generate report');
   return res.json();
 }
+
+export async function fetchDistrictForecast(districtId: string): Promise<{ mode: string; forecast: any }> {
+  const res = await fetch(`${BASE_URL}/forecast/district/${encodeURIComponent(districtId)}`);
+  if (!res.ok) throw new Error(`Failed to fetch 3-day forecast for ${districtId}`);
+  return res.json();
+}
+
+export async function fetchAllForecasts(state?: string): Promise<{ total_districts: number; mode: string; forecasts: any[] }> {
+  const url = state ? `${BASE_URL}/forecast/all?state=${encodeURIComponent(state)}` : `${BASE_URL}/forecast/all`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch 3-day district forecasts');
+  return res.json();
+}
