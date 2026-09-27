@@ -5,7 +5,7 @@ routes to role-based recipient channels, and handles cooldown deduplication.
 """
 
 from datetime import datetime, timezone, timedelta
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 import uuid
 import logging
 
@@ -21,7 +21,7 @@ class AlertEngine:
     COOLDOWN_HOURS = 4
 
     @staticmethod
-    def map_operational_severity(utci_c: float) -> Tuple_Severity:
+    def map_operational_severity(utci_c: float) -> Tuple[str, List[str], str]:
         """
         Translates continuous UTCI into application-level operational severity and recipient role list.
         """
@@ -206,5 +206,5 @@ class AlertEngine:
             "deliveries": deliveries
         }
 
-Tuple_Severity = Any
 alert_engine = AlertEngine()
+
