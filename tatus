@@ -1,0 +1,84 @@
+warning: in the working copy of 'backend/config.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/main.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'render.yaml', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/config.py b/backend/config.py[m
+[1mindex 95ab6e9..3d473e9 100644[m
+[1m--- a/backend/config.py[m
+[1m+++ b/backend/config.py[m
+[36m@@ -37,6 +37,16 @@[m [mclass Settings:[m
+     HOST: str = os.getenv("HOST", "0.0.0.0")[m
+     PORT: int = int(os.getenv("PORT", "8000"))[m
+     [m
+[32m+[m[32m    # CORS[m
+[32m+[m[32m    CORS_ORIGINS: list = [[m
+[32m+[m[32m        origin.strip()[m
+[32m+[m[32m        for origin in os.getenv([m
+[32m+[m[32m            "CORS_ORIGINS",[m
+[32m+[m[32m            "https://philips-sujith.github.io,http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000"[m
+[32m+[m[32m        ).split(",")[m
+[32m+[m[32m        if origin.strip()[m
+[32m+[m[32m    ][m
+[32m+[m[41m    [m
+     # Paths[m
+     BASE_DIR: Path = Path(__file__).resolve().parent.parent[m
+     DATA_DIR: Path = BASE_DIR / "data"[m
+[1mdiff --git a/backend/main.py b/backend/main.py[m
+[1mindex a13cfa7..20c9f98 100644[m
+[1m--- a/backend/main.py[m
+[1m+++ b/backend/main.py[m
+[36m@@ -56,7 +56,7 @@[m [mapp = FastAPI([m
+ # CORS Configuration[m
+ app.add_middleware([m
+     CORSMiddleware,[m
+[31m-    allow_origins=["*"],[m
+[32m+[m[32m    allow_origins=settings.CORS_ORIGINS,[m
+     allow_credentials=True,[m
+     allow_methods=["*"],[m
+     allow_headers=["*"],[m
+[36m@@ -70,17 +70,19 @@[m [mstatic_data_path = settings.DATA_DIR[m
+ if static_data_path.exists():[m
+     app.mount("/data", StaticFiles(directory=str(static_data_path)), name="data")[m
+ [m
+[31m-# Frontend static files if built[m
+[32m+[m[32m# Frontend static files if built (optional)[m
+ frontend_dist_path = settings.BASE_DIR / "frontend" / "dist"[m
+[31m-if frontend_dist_path.exists():[m
+[31m-    app.mount("/assets", StaticFiles(directory=str(frontend_dist_path / "assets")), name="assets")[m
+[32m+[m[32massets_path = frontend_dist_path / "assets"[m
+[32m+[m[32mindex_path = frontend_dist_path / "index.html"[m
+[32m+[m[32mif frontend_dist_path.exists() and assets_path.exists() and index_path.exists():[m
+[32m+[m[32m    app.mount("/assets", StaticFiles(directory=str(assets_path)), name="assets")[m
+     [m
+     @app.get("/{full_path:path}")[m
+     async def serve_frontend(full_path: str):[m
+         file_path = frontend_dist_path / full_path[m
+         if file_path.exists() and file_path.is_file():[m
+             return FileResponse(file_path)[m
+[31m-        return FileResponse(frontend_dist_path / "index.html")[m
+[32m+[m[32m        return FileResponse(index_path)[m
+ [m
+ if __name__ == "__main__":[m
+     import uvicorn[m
+[1mdiff --git a/render.yaml b/render.yaml[m
+[1mindex 7f63ed9..e6506d9 100644[m
+[1m--- a/render.yaml[m
+[1m+++ b/render.yaml[m
+[36m@@ -16,14 +16,16 @@[m [mservices:[m
+         value: https://api.open-meteo.com/v1/forecast[m
+       - key: WEATHER_REFRESH_INTERVAL_HOURS[m
+         value: "2"[m
+[32m+[m[32m      - key: CORS_ORIGINS[m
+[32m+[m[32m        value: https://philips-sujith.github.io,http://localhost:5173,http://127.0.0.1:5173[m
+       - key: ADMIN_USERNAME[m
+         value: admin[m
+       - key: ADMIN_PASSWORD[m
+[31m-        generateValue: true[m
+[32m+[m[32m        sync: false[m
+       - key: JWT_SECRET[m
+         generateValue: true[m
+       - key: TELEGRAM_AUTO_BROADCAST[m
+[31m-        value: "false"[m
+[32m+[m[32m        sync: false[m
+       - key: TELEGRAM_BOT_TOKEN[m
+         sync: false[m
+       - key: TELEGRAM_CHAT_ID[m

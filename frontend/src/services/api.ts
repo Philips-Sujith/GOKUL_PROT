@@ -7,7 +7,10 @@ import {
   SystemStatus
 } from '../types';
 
-const BASE_URL = '/api';
+const envApiUrl = import.meta.env.VITE_API_URL;
+const BASE_URL = envApiUrl 
+  ? (envApiUrl.endsWith('/api') ? envApiUrl : `${envApiUrl.replace(/\/+$/, '')}/api`)
+  : '/api';
 
 export async function fetchSystemStatus(): Promise<SystemStatus> {
   const res = await fetch(`${BASE_URL}/system/status`);

@@ -37,6 +37,16 @@ class Settings:
     HOST: str = os.getenv("HOST", "0.0.0.0")
     PORT: int = int(os.getenv("PORT", "8000"))
     
+    # CORS
+    CORS_ORIGINS: list = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS",
+            "https://philips-sujith.github.io,http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000"
+        ).split(",")
+        if origin.strip()
+    ]
+    
     # Paths
     BASE_DIR: Path = Path(__file__).resolve().parent.parent
     DATA_DIR: Path = BASE_DIR / "data"

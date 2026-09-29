@@ -16,14 +16,16 @@ services:
         value: https://api.open-meteo.com/v1/forecast
       - key: WEATHER_REFRESH_INTERVAL_HOURS
         value: "2"
+      - key: CORS_ORIGINS
+        value: https://philips-sujith.github.io,http://localhost:5173,http://127.0.0.1:5173
       - key: ADMIN_USERNAME
         value: admin
       - key: ADMIN_PASSWORD
-        generateValue: true
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: TELEGRAM_AUTO_BROADCAST
-        value: "false"
+        sync: false
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: TELEGRAM_CHAT_ID

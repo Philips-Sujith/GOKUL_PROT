@@ -319,7 +319,8 @@ export const GisMap: React.FC<GisMapProps> = ({
     if (geoJsonDataCacheRef.current) {
       renderGeoJson(geoJsonDataCacheRef.current);
     } else {
-      fetch('/data/south_india_districts.geojson')
+      const geojsonPath = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/data/south_india_districts.geojson`;
+      fetch(geojsonPath)
         .then(res => res.json())
         .then(geojsonData => {
           renderGeoJson(geojsonData);

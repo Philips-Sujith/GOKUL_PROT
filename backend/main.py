@@ -56,7 +56,7 @@ app = FastAPI(
 # CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -70,17 +70,19 @@ static_data_path = settings.DATA_DIR
 if static_data_path.exists():
     app.mount("/data", StaticFiles(directory=str(static_data_path)), name="data")
 
-# Frontend static files if built
+# Frontend static files if built (optional)
 frontend_dist_path = settings.BASE_DIR / "frontend" / "dist"
-if frontend_dist_path.exists():
-    app.mount("/assets", StaticFiles(directory=str(frontend_dist_path / "assets")), name="assets")
+assets_path = frontend_dist_path / "assets"
+index_path = frontend_dist_path / "index.html"
+if frontend_dist_path.exists() and assets_path.exists() and index_path.exists():
+    app.mount("/assets", StaticFiles(directory=str(assets_path)), name="assets")
     
     @app.get("/{full_path:path}")
     async def serve_frontend(full_path: str):
         file_path = frontend_dist_path / full_path
         if file_path.exists() and file_path.is_file():
             return FileResponse(file_path)
-        return FileResponse(frontend_dist_path / "index.html")
+        return FileResponse(index_path)
 
 if __name__ == "__main__":
     import uvicorn
