@@ -103,28 +103,59 @@ def get_latest_district_data(db: Session, district_id: str, mode: str):
             ThermalResult.mode == "LIVE"
         ).order_by(desc(ThermalResult.created_at)).first()
         
-        weather_dict = {
-            "temperature_c": latest_weather.temperature_c if latest_weather else 32.0,
-            "relative_humidity": latest_weather.relative_humidity if latest_weather else 60.0,
-            "wind_speed_mps": latest_weather.wind_speed_mps if latest_weather else 2.0,
-            "wind_direction_deg": latest_weather.wind_direction_deg if latest_weather else 0.0,
-            "surface_pressure_hpa": latest_weather.surface_pressure_hpa if latest_weather else 1013.25,
-            "shortwave_radiation_wm2": latest_weather.shortwave_radiation_wm2 if latest_weather else 0.0,
-            "direct_radiation_wm2": latest_weather.direct_radiation_wm2 if latest_weather else 0.0,
-            "diffuse_radiation_wm2": latest_weather.diffuse_radiation_wm2 if latest_weather else 0.0,
-            "data_quality": latest_weather.data_quality if latest_weather else "STALE"
-        }
+        has_real_weather = latest_weather is not None and latest_weather.data_quality != "UNAVAILABLE" and latest_weather.temperature_c is not None
+        has_real_thermal = latest_thermal is not None and latest_thermal.data_quality != "UNAVAILABLE" and latest_thermal.utci_c is not None
         
-        utci_val = latest_thermal.utci_c if latest_thermal else 34.0
-        mrt_val = latest_thermal.mrt_c if latest_thermal else 45.0
-        cat_info = ThermalStressService.classify_utci(utci_val)
+        if has_real_weather:
+            weather_dict = {
+                "temperature_c": latest_weather.temperature_c,
+                "relative_humidity": latest_weather.relative_humidity,
+                "wind_speed_mps": latest_weather.wind_speed_mps,
+                "wind_direction_deg": latest_weather.wind_direction_deg,
+                "surface_pressure_hpa": latest_weather.surface_pressure_hpa,
+                "shortwave_radiation_wm2": latest_weather.shortwave_radiation_wm2,
+                "direct_radiation_wm2": latest_weather.direct_radiation_wm2,
+                "diffuse_radiation_wm2": latest_weather.diffuse_radiation_wm2,
+                "data_quality": latest_weather.data_quality
+            }
+        else:
+            weather_dict = {
+                "temperature_c": None,
+                "relative_humidity": None,
+                "wind_speed_mps": None,
+                "wind_direction_deg": None,
+                "surface_pressure_hpa": None,
+                "shortwave_radiation_wm2": None,
+                "direct_radiation_wm2": None,
+                "diffuse_radiation_wm2": None,
+                "data_quality": "UNAVAILABLE"
+            }
         
-        thermal_dict = {
-            "mrt_c": mrt_val,
-            "utci_c": utci_val,
-            "category_info": cat_info,
-            "data_quality": latest_thermal.data_quality if latest_thermal else "STALE"
-        }
+        if has_real_thermal:
+            cat_info = ThermalStressService.classify_utci(latest_thermal.utci_c)
+            thermal_dict = {
+                "mrt_c": latest_thermal.mrt_c,
+                "utci_c": latest_thermal.utci_c,
+                "category_info": cat_info,
+                "data_quality": latest_thermal.data_quality
+            }
+        else:
+            thermal_dict = {
+                "mrt_c": None,
+                "utci_c": None,
+                "category_info": {
+                    "category": "No live data",
+                    "min_utci": 0.0,
+                    "max_utci": 0.0,
+                    "severity_rank": 0,
+                    "color": "#94a3b8",
+                    "badge_bg": "#f1f5f9",
+                    "badge_text": "#475569",
+                    "badge_border": "#cbd5e1",
+                    "description": "Live weather station feed currently unavailable."
+                },
+                "data_quality": "UNAVAILABLE"
+            }
         
         return {
             "id": d.id,
@@ -148,6 +179,12 @@ def get_system_status(db: Session = Depends(get_db)):
     districts_count = db.query(District).count()
     active_alerts_count = db.query(Alert).filter(Alert.status == "ACTIVE", Alert.mode == mode).count()
     
+    # Calculate live districts with valid observation in database
+    live_districts_count = db.query(WeatherObservation.district_id).filter(
+        WeatherObservation.data_quality == "VALID",
+        WeatherObservation.mode == mode
+    ).distinct().count()
+    
     return {
         "app_name": settings.APP_NAME,
         "full_title": settings.FULL_TITLE,
@@ -157,8 +194,10 @@ def get_system_status(db: Session = Depends(get_db)):
         "demo_scenario": runtime_state.get("demo_scenario") if mode == "DEMO" else None,
         "available_demo_scenarios": list(DEMO_SCENARIOS.keys()),
         "districts_count": districts_count,
+        "districts_with_live_data_count": live_districts_count,
         "active_alerts_count": active_alerts_count,
         "last_pipeline_run_ist": scheduler_instance.last_run_ist,
+        "last_successful_ingestion_ist": scheduler_instance.last_successful_run_ist,
         "pipeline_status": scheduler_instance.last_status,
         "weather_provider": "Open-Meteo REST (Non-commercial open tier)",
         "thermal_engine": "ECMWF thermofeel (Di Napoli et al. 2020 & Brode et al. 2012)",

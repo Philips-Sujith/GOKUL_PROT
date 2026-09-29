@@ -13,7 +13,7 @@ import {
   UserCheck
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-import { DistrictSummary } from '../types';
+import { DistrictSummary, UTCICategoryInfo } from '../types';
 import { HumanThermalAvatar } from './HumanThermalAvatar';
 import { ThreeDayForecastCard } from './ThreeDayForecastCard';
 
@@ -37,10 +37,21 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
   }
 
   const { thermal, weather, name, state, timestamp_ist } = district;
-  const utciCat = thermal.category_info;
+  const isUnavailable = thermal?.data_quality === 'UNAVAILABLE' || thermal?.utci_c == null;
+  const utciCat: UTCICategoryInfo = isUnavailable ? {
+    category: 'No live data',
+    min_utci: 0,
+    max_utci: 0,
+    severity_rank: 0,
+    color: '#94a3b8',
+    badge_bg: '#f1f5f9',
+    badge_text: '#475569',
+    badge_border: '#cbd5e1',
+    description: 'Meteorological and thermal observation data for this district is currently unavailable from external providers.'
+  } : thermal.category_info;
 
   // Radiation delta (MRT minus Air Temp)
-  const radiationDelta = thermal.mrt_c - weather.temperature_c;
+  const radiationDelta = (thermal?.mrt_c != null && weather?.temperature_c != null) ? (thermal.mrt_c - weather.temperature_c) : 0;
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-5">
@@ -67,11 +78,13 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
 
         {/* Quality status */}
         <span className={`text-[11px] px-2 py-0.5 rounded-full font-semibold border ${
-          thermal.data_quality === 'VALID'
+          isUnavailable
+            ? 'bg-slate-100 text-slate-600 border-slate-300'
+            : thermal.data_quality === 'VALID'
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
             : 'bg-amber-50 text-amber-700 border-amber-200'
         }`}>
-          ● {thermal.data_quality || 'VALID'}
+          ● {isUnavailable ? 'No live data' : (thermal.data_quality || 'VALID')}
         </span>
       </div>
 
@@ -99,7 +112,7 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
                 </span>
                 <div className="flex items-baseline gap-2 mt-0.5">
                   <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-mono">
-                    {thermal.utci_c.toFixed(1)}
+                    {isUnavailable || thermal.utci_c == null ? '--' : thermal.utci_c.toFixed(1)}
                   </span>
                   <span className="text-lg font-bold text-slate-500">°C</span>
                 </div>
@@ -109,26 +122,26 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
                 <span 
                   className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border"
                   style={{
-                    backgroundColor: utciCat?.badge_bg || '#fef2f2',
-                    color: utciCat?.badge_text || '#991b1b',
-                    borderColor: utciCat?.badge_border || '#fecaca'
+                    backgroundColor: utciCat?.badge_bg || '#f1f5f9',
+                    color: utciCat?.badge_text || '#475569',
+                    borderColor: utciCat?.badge_border || '#cbd5e1'
                   }}
                 >
                   <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                  <span>{utciCat?.category || 'Calculating'}</span>
+                  <span>{utciCat?.category || 'No live data'}</span>
                 </span>
               </div>
               
               <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                Current conditions indicate {utciCat?.category?.toLowerCase() || 'thermal strain'}.
+                {isUnavailable ? 'Live meteorological feed temporarily unavailable.' : `Current conditions indicate ${utciCat?.category?.toLowerCase() || 'thermal strain'}.`}
               </p>
             </div>
 
             {/* RIGHT REGION (42% width on desktop) */}
             <div className="w-full sm:w-[42%] flex justify-center items-center">
               <HumanThermalAvatar
-                utci={thermal.utci_c}
-                categoryName={utciCat?.category || 'Moderate'}
+                utci={isUnavailable || thermal.utci_c == null ? 0 : thermal.utci_c}
+                categoryName={isUnavailable ? 'No live data' : (utciCat?.category || 'Moderate')}
                 className="w-full"
               />
             </div>
@@ -150,14 +163,18 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
           <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
             <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
               <span className="text-slate-500 block text-[11px] font-medium">Mean Radiant Temp (MRT):</span>
-              <strong className="text-slate-900 font-bold text-sm">{thermal.mrt_c.toFixed(1)}°C</strong>
+              <strong className="text-slate-900 font-bold text-sm">
+                {isUnavailable || thermal.mrt_c == null ? '--' : `${thermal.mrt_c.toFixed(1)}°C`}
+              </strong>
               <span className="text-[10px] text-teal-700 font-medium block mt-0.5">
-                (+{radiationDelta > 0 ? radiationDelta.toFixed(1) : '0.0'}°C radiation load)
+                {isUnavailable ? 'Awaiting station feed' : `(+${radiationDelta > 0 ? radiationDelta.toFixed(1) : '0.0'}°C radiation load)`}
               </span>
             </div>
             <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
               <span className="text-slate-500 block text-[11px] font-medium">Ambient Air Temp:</span>
-              <strong className="text-slate-900 font-bold text-sm">{weather.temperature_c.toFixed(1)}°C</strong>
+              <strong className="text-slate-900 font-bold text-sm">
+                {isUnavailable || weather.temperature_c == null ? '--' : `${weather.temperature_c.toFixed(1)}°C`}
+              </strong>
               <span className="text-[10px] text-slate-500 font-medium block mt-0.5">
                 2m dry bulb thermometer
               </span>
@@ -186,7 +203,7 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
               <span>Rel. Humidity</span>
             </div>
             <div className="text-base font-bold text-slate-900">
-              {weather.relative_humidity.toFixed(0)}%
+              {weather.relative_humidity != null ? `${weather.relative_humidity.toFixed(0)}%` : '--'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">
               Moisture retards sweat evaporation
@@ -199,7 +216,7 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
               <span>Wind (10m)</span>
             </div>
             <div className="text-base font-bold text-slate-900">
-              {weather.wind_speed_mps.toFixed(1)} m/s
+              {weather.wind_speed_mps != null ? `${weather.wind_speed_mps.toFixed(1)} m/s` : '--'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">
               Convective air movement
@@ -212,7 +229,7 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
               <span>Solar Irradiance</span>
             </div>
             <div className="text-base font-bold text-slate-900">
-              {(weather.shortwave_radiation_wm2 || 0).toFixed(0)} W/m²
+              {weather.shortwave_radiation_wm2 != null ? `${weather.shortwave_radiation_wm2.toFixed(0)} W/m²` : '--'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">
               Direct & diffuse downwelling flux
@@ -225,7 +242,7 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
               <span>Surface Pressure</span>
             </div>
             <div className="text-base font-bold text-slate-900">
-              {(weather.surface_pressure_hpa || 1013).toFixed(0)} hPa
+              {weather.surface_pressure_hpa != null ? `${weather.surface_pressure_hpa.toFixed(0)} hPa` : '--'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">
               Barometric reading
@@ -291,37 +308,39 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
             <div className="flex justify-between py-0.5 border-b border-slate-100">
               <span className="text-slate-500">1. Atmospheric Vapour Pressure:</span>
               <span className="text-slate-900 font-semibold">
-                {((weather.relative_humidity / 100.0) * 6.112 * Math.exp((17.67 * weather.temperature_c) / (weather.temperature_c + 243.5))).toFixed(2)} hPa (Magnus-Tetens)
+                {(weather.relative_humidity != null && weather.temperature_c != null)
+                  ? `${((weather.relative_humidity / 100.0) * 6.112 * Math.exp((17.67 * weather.temperature_c) / (weather.temperature_c + 243.5))).toFixed(2)} hPa (Magnus-Tetens)`
+                  : '--'}
               </span>
             </div>
             <div className="flex justify-between py-0.5 border-b border-slate-100">
               <span className="text-slate-500">2. Solar Downwelling (SSRD / Direct):</span>
               <span className="text-slate-900 font-semibold">
-                {(weather.shortwave_radiation_wm2 || 0).toFixed(0)} W/m² (Direct: {(weather.direct_radiation_wm2 || 0).toFixed(0)})
+                {weather.shortwave_radiation_wm2 != null ? `${weather.shortwave_radiation_wm2.toFixed(0)} W/m² (Direct: ${(weather.direct_radiation_wm2 || 0).toFixed(0)})` : '--'}
               </span>
             </div>
             <div className="flex justify-between py-0.5 border-b border-slate-100">
               <span className="text-slate-500">3. Mean Radiant Temperature (MRT):</span>
               <span className="text-slate-900 font-semibold">
-                {thermal.mrt_c.toFixed(2)}°C / {(thermal.mrt_c + 273.15).toFixed(2)} K (Di Napoli et al. 2020)
+                {thermal.mrt_c != null ? `${thermal.mrt_c.toFixed(2)}°C / ${(thermal.mrt_c + 273.15).toFixed(2)} K (Di Napoli et al. 2020)` : '--'}
               </span>
             </div>
             <div className="flex justify-between py-0.5 border-b border-slate-100">
               <span className="text-slate-500">4. Wind at 10m -&gt; 2m (v_a):</span>
               <span className="text-slate-900 font-semibold">
-                {weather.wind_speed_mps.toFixed(2)} m/s (clamped to physical bounds)
+                {weather.wind_speed_mps != null ? `${weather.wind_speed_mps.toFixed(2)} m/s (clamped to physical bounds)` : '--'}
               </span>
             </div>
             <div className="flex justify-between py-0.5 border-b border-slate-100">
               <span className="text-slate-500">5. 6th-Order Polynomial Output (UTCI):</span>
               <span className="text-teal-700 font-bold">
-                {thermal.utci_c.toFixed(2)}°C (Brode et al. 2012)
+                {thermal.utci_c != null ? `${thermal.utci_c.toFixed(2)}°C (Brode et al. 2012)` : '--'}
               </span>
             </div>
             <div className="flex justify-between py-0.5">
               <span className="text-slate-500">6. Authoritative Category:</span>
               <span className="font-bold" style={{ color: utciCat?.color || '#0f172a' }}>
-                {utciCat?.category} (Rank {utciCat?.severity_rank})
+                {utciCat?.category} {utciCat?.severity_rank ? `(Rank ${utciCat.severity_rank})` : ''}
               </span>
             </div>
           </div>

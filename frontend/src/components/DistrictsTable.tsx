@@ -25,7 +25,9 @@ export const DistrictsTable: React.FC<DistrictsTableProps> = ({
         return matchesName && matchesState;
       })
       .sort((a, b) => {
-        const diff = (b.thermal?.utci_c || 0) - (a.thermal?.utci_c || 0);
+        const valA = (a.thermal?.data_quality !== 'UNAVAILABLE' && a.thermal?.utci_c != null) ? a.thermal.utci_c : -999;
+        const valB = (b.thermal?.data_quality !== 'UNAVAILABLE' && b.thermal?.utci_c != null) ? b.thermal.utci_c : -999;
+        const diff = valB - valA;
         return sortOrder === 'desc' ? diff : -diff;
       });
   }, [districts, searchTerm, selectedState, sortOrder]);
@@ -112,8 +114,12 @@ export const DistrictsTable: React.FC<DistrictsTableProps> = ({
             ) : (
               filteredDistricts.map((d) => {
                 const isSelected = d.id === selectedDistrictId;
-                const utci = d.thermal?.utci_c || 0;
+                const isUnavailable = d.thermal?.data_quality === 'UNAVAILABLE' || d.thermal?.utci_c == null;
                 const catInfo = d.thermal?.category_info;
+                const catColor = isUnavailable ? '#94a3b8' : (catInfo?.color || '#0f172a');
+                const badgeBg = isUnavailable ? '#f1f5f9' : (catInfo?.badge_bg || '#f1f5f9');
+                const badgeText = isUnavailable ? '#475569' : (catInfo?.badge_text || '#334155');
+                const badgeBorder = isUnavailable ? '#cbd5e1' : (catInfo?.badge_border || '#cbd5e1');
 
                 return (
                   <tr
@@ -132,27 +138,27 @@ export const DistrictsTable: React.FC<DistrictsTableProps> = ({
                       {d.state}
                     </td>
                     <td className="px-3 py-2 text-right">
-                      {d.weather?.temperature_c?.toFixed(1)}°C
+                      {d.weather?.temperature_c != null ? `${d.weather.temperature_c.toFixed(1)}°C` : 'N/A'}
                     </td>
                     <td className="px-3 py-2 text-right text-slate-500">
-                      {d.weather?.relative_humidity?.toFixed(0)}%
+                      {d.weather?.relative_humidity != null ? `${d.weather.relative_humidity.toFixed(0)}%` : 'N/A'}
                     </td>
                     <td className="px-3 py-2 text-right font-mono text-slate-600">
-                      {d.thermal?.mrt_c?.toFixed(1)}°C
+                      {d.thermal?.mrt_c != null ? `${d.thermal.mrt_c.toFixed(1)}°C` : 'N/A'}
                     </td>
-                    <td className="px-3 py-2 text-right font-bold font-mono text-sm" style={{ color: catInfo?.color || '#0f172a' }}>
-                      {utci.toFixed(1)}°C
+                    <td className="px-3 py-2 text-right font-bold font-mono text-sm" style={{ color: catColor }}>
+                      {isUnavailable ? 'No live data' : `${(d.thermal?.utci_c as number).toFixed(1)}°C`}
                     </td>
                     <td className="px-3.5 py-2">
                       <span
                         className="inline-block px-2 py-0.5 rounded text-[10px] font-bold border"
                         style={{
-                          backgroundColor: catInfo?.badge_bg || '#f1f5f9',
-                          color: catInfo?.badge_text || '#334155',
-                          borderColor: catInfo?.badge_border || '#cbd5e1'
+                          backgroundColor: badgeBg,
+                          color: badgeText,
+                          borderColor: badgeBorder
                         }}
                       >
-                        {catInfo?.category || 'Calculating'}
+                        {isUnavailable ? 'No live data' : (catInfo?.category || 'No live data')}
                       </span>
                     </td>
                     <td className="px-2 py-2 text-center text-slate-400">

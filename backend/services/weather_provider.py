@@ -87,6 +87,33 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
             "raw_payload": current
         }
 
+    def _get_with_backoff(self, params: Dict[str, Any], max_retries: int = 3, initial_backoff: float = 2.0) -> Any:
+        import time
+        for attempt in range(max_retries):
+            try:
+                resp = self.session.get(self.base_url, params=params, timeout=self.timeout_sec)
+                if resp.status_code == 429:
+                    retry_after = resp.headers.get("Retry-After")
+                    try:
+                        wait_time = float(retry_after) if retry_after else (initial_backoff * (2 ** attempt))
+                    except (ValueError, TypeError):
+                        wait_time = initial_backoff * (2 ** attempt)
+                    logger.warning(
+                        f"Open-Meteo 429 Too Many Requests received. Waiting {wait_time:.1f}s before retry (attempt {attempt + 1}/{max_retries})."
+                    )
+                    time.sleep(wait_time)
+                    continue
+
+                resp.raise_for_status()
+                return resp.json()
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    raise e
+                wait_time = initial_backoff * (2 ** attempt)
+                logger.warning(f"Weather request error: {e}. Retrying in {wait_time:.1f}s...")
+                time.sleep(wait_time)
+        return None
+
     def fetch_district_weather(self, district: Dict[str, Any]) -> Dict[str, Any]:
         dt_utc = datetime.now(timezone.utc)
         params = {
@@ -96,32 +123,33 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
             "timezone": "UTC"
         }
         try:
-            resp = self.session.get(self.base_url, params=params, timeout=self.timeout_sec)
-            resp.raise_for_status()
-            data = resp.json()
-            return self._parse_current_payload(district["id"], data, dt_utc)
+            data = self._get_with_backoff(params, max_retries=3, initial_backoff=2.0)
+            if data is not None:
+                return self._parse_current_payload(district["id"], data, dt_utc)
+            raise ValueError("No data returned from Open-Meteo")
         except Exception as e:
             logger.warning(f"Weather fetch notice for district {district.get('name')}: {e}")
             return {
                 "district_id": district["id"],
                 "timestamp_utc": dt_utc,
                 "timestamp_ist": utc_to_ist_str(dt_utc),
-                "temperature_c": 0.0,
-                "relative_humidity": 0.0,
-                "wind_speed_mps": 0.0,
-                "wind_direction_deg": 0.0,
-                "surface_pressure_hpa": 1013.25,
-                "shortwave_radiation_wm2": 0.0,
-                "direct_radiation_wm2": 0.0,
-                "diffuse_radiation_wm2": 0.0,
+                "temperature_c": None,
+                "relative_humidity": None,
+                "wind_speed_mps": None,
+                "wind_direction_deg": None,
+                "surface_pressure_hpa": None,
+                "shortwave_radiation_wm2": None,
+                "direct_radiation_wm2": None,
+                "diffuse_radiation_wm2": None,
                 "source": "Open-Meteo",
                 "data_quality": "UNAVAILABLE",
                 "error": str(e)
             }
 
-    def fetch_all_districts_weather(self, districts: List[Dict[str, Any]], batch_size: int = 5) -> Dict[str, Dict[str, Any]]:
+    def fetch_all_districts_weather(self, districts: List[Dict[str, Any]], batch_size: int = 45) -> Dict[str, Dict[str, Any]]:
         """
-        Batch-fetches weather for all districts with session pooling and rate limiting.
+        Batch-fetches weather for all districts with session pooling, larger batch coordinate requests,
+        exponential backoff on 429, and gentle inter-batch pacing.
         """
         import time
         results = {}
@@ -140,9 +168,7 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
             }
             
             try:
-                resp = self.session.get(self.base_url, params=params, timeout=self.timeout_sec)
-                resp.raise_for_status()
-                data = resp.json()
+                data = self._get_with_backoff(params, max_retries=3, initial_backoff=2.0)
                 
                 if isinstance(data, list):
                     for district, item in zip(batch, data):
@@ -150,15 +176,31 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
                 elif isinstance(data, dict) and len(batch) == 1:
                     results[batch[0]["id"]] = self._parse_current_payload(batch[0]["id"], data, dt_utc)
                 else:
-                    for district in batch:
-                        results[district["id"]] = self.fetch_district_weather(district)
+                    raise ValueError(f"Unexpected response structure for batch: {type(data)}")
                         
             except Exception as e:
                 logger.warning(f"Batch fetch notice for batch {i//batch_size + 1}: {e}")
+                # Do NOT trigger a barrage of individual single-district requests!
                 for district in batch:
-                    results[district["id"]] = self.fetch_district_weather(district)
+                    results[district["id"]] = {
+                        "district_id": district["id"],
+                        "timestamp_utc": dt_utc,
+                        "timestamp_ist": utc_to_ist_str(dt_utc),
+                        "temperature_c": None,
+                        "relative_humidity": None,
+                        "wind_speed_mps": None,
+                        "wind_direction_deg": None,
+                        "surface_pressure_hpa": None,
+                        "shortwave_radiation_wm2": None,
+                        "direct_radiation_wm2": None,
+                        "diffuse_radiation_wm2": None,
+                        "source": "Open-Meteo",
+                        "data_quality": "UNAVAILABLE",
+                        "error": str(e)
+                    }
                     
-            time.sleep(0.20) # gentle pacing between batches
+            if i + batch_size < len(districts):
+                time.sleep(1.0) # gentle pacing between multi-district batches
                     
         return results
 

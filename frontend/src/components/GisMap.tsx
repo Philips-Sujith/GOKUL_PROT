@@ -68,7 +68,8 @@ export const GisMap: React.FC<GisMapProps> = ({
     // Collect valid district centroids and their UTCI values
     const points: { lat: number; lon: number; utci: number }[] = [];
     districts.forEach(d => {
-      if (d.latitude && d.longitude && d.thermal?.utci_c !== undefined) {
+      const isUnavailable = d.thermal?.data_quality === 'UNAVAILABLE' || d.thermal?.utci_c === null || d.thermal?.utci_c === undefined;
+      if (d.latitude && d.longitude && !isUnavailable && typeof d.thermal?.utci_c === 'number') {
         points.push({
           lat: d.latitude,
           lon: d.longitude,
@@ -211,7 +212,8 @@ export const GisMap: React.FC<GisMapProps> = ({
           const dId = feature?.properties?.id;
           const summary = districtMap.get(dId);
           const isSelected = dId === selectedDistrictId;
-          const catColor = summary?.thermal?.category_info?.color || '#16a34a';
+          const isUnavailable = !summary || summary.thermal?.data_quality === 'UNAVAILABLE' || summary.thermal?.utci_c === null || summary.thermal?.utci_c === undefined;
+          const catColor = isUnavailable ? '#94a3b8' : (summary?.thermal?.category_info?.color || '#16a34a');
 
           if (vizMode === 'field') {
             // In Thermal Field mode, polygons provide subtle contextual borders
@@ -232,7 +234,7 @@ export const GisMap: React.FC<GisMapProps> = ({
             opacity: 1,
             color: isSelected ? '#0f172a' : '#334155',
             dashArray: isSelected ? '' : '',
-            fillOpacity: isSelected ? 0.95 : 0.85
+            fillOpacity: isSelected ? 0.95 : (isUnavailable ? 0.70 : 0.85)
           };
         },
         onEachFeature: (feature, layer) => {
@@ -241,14 +243,15 @@ export const GisMap: React.FC<GisMapProps> = ({
           const dState = feature?.properties?.state;
           const summary = districtMap.get(dId);
 
-          const utciVal = summary?.thermal?.utci_c !== undefined ? `${summary.thermal.utci_c.toFixed(1)}°C` : 'N/A';
-          const catName = summary?.thermal?.category_info?.category || 'No thermal stress';
-          const catColor = summary?.thermal?.category_info?.color || '#16a34a';
-          const badgeBg = summary?.thermal?.category_info?.badge_bg || '#f0fdf4';
-          const tempVal = summary?.weather?.temperature_c !== undefined ? `${summary.weather.temperature_c.toFixed(1)}°C` : 'N/A';
-          const mrtVal = summary?.thermal?.mrt_c !== undefined ? `${summary.thermal.mrt_c.toFixed(1)}°C` : 'N/A';
+          const isUnavailable = !summary || summary.thermal?.data_quality === 'UNAVAILABLE' || summary.thermal?.utci_c === null || summary.thermal?.utci_c === undefined;
+          const utciVal = isUnavailable ? 'No live data' : `${summary.thermal.utci_c.toFixed(1)}°C`;
+          const catName = isUnavailable ? 'No live data' : (summary?.thermal?.category_info?.category || 'No thermal stress');
+          const catColor = isUnavailable ? '#64748b' : (summary?.thermal?.category_info?.color || '#16a34a');
+          const badgeBg = isUnavailable ? '#f1f5f9' : (summary?.thermal?.category_info?.badge_bg || '#f0fdf4');
+          const tempVal = (!isUnavailable && summary?.weather?.temperature_c != null) ? `${summary.weather.temperature_c.toFixed(1)}°C` : 'N/A';
+          const mrtVal = (!isUnavailable && summary?.thermal?.mrt_c != null) ? `${summary.thermal.mrt_c.toFixed(1)}°C` : 'N/A';
           const timeVal = summary?.timestamp_ist || 'Live';
-          const dataQuality = summary?.thermal?.data_quality || 'VALID';
+          const dataQuality = isUnavailable ? 'UNAVAILABLE' : (summary?.thermal?.data_quality || 'VALID');
 
           // High-Aesthetic Tooltip
           layer.bindTooltip(`

@@ -29,19 +29,22 @@ logger = logging.getLogger("ushna.main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Create tables and initialize districts
+    import asyncio
+    # Startup: Create tables and initialize districts so schema is immediately ready
     logger.info("Initializing Ushna Kaappaan database schema...")
     Base.metadata.create_all(bind=engine)
     
     db = SessionLocal()
     try:
         scheduler_instance.initialize_districts(db)
-        logger.info("Districts initialized. Running initial ingestion pipeline...")
-        scheduler_instance.run_full_pipeline(mode=settings.APP_MODE)
+        logger.info("Districts initialized. Dispatching initial ingestion to background thread...")
     except Exception as e:
         logger.error(f"Startup initialization error: {e}", exc_info=True)
     finally:
         db.close()
+        
+    # Run initial ingestion asynchronously in background so server port binds immediately
+    asyncio.create_task(asyncio.to_thread(scheduler_instance.run_full_pipeline, settings.APP_MODE))
         
     yield
     logger.info("Shutting down Ushna Kaappaan server.")
