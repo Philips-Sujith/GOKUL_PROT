@@ -22,7 +22,7 @@ class Settings:
     WEATHER_REFRESH_INTERVAL_HOURS: int = int(os.getenv("WEATHER_REFRESH_INTERVAL_HOURS", "2"))
     WEATHER_SNAPSHOT_URL: str = os.getenv(
         "WEATHER_SNAPSHOT_URL",
-        "https://raw.githubusercontent.com/Philips-Sujith/GOKUL_PROT/weather-data/weather_snapshot.json"
+        "https://raw.githubusercontent.com/Philips-Sujith/Ushna_Kaappaan/weather-data/weather_snapshot.json"
     )
     
     # Telegram
