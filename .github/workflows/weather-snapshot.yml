@@ -1,0 +1,70 @@
+name: Weather Snapshot Fallback
+
+on:
+  schedule:
+    # Run every 2 hours (UTC)
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 'weather-snapshot'
+  cancel-in-progress: true
+
+jobs:
+  update-weather-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests urllib3
+
+      - name: Run weather snapshot script
+        run: |
+          python scripts/fetch_weather_snapshot.py
+
+      - name: Commit and push snapshot to weather-data branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Temporarily copy snapshot file
+          cp weather_snapshot.json /tmp/weather_snapshot.json
+
+          # Checkout or create orphan weather-data branch
+          if git ls-remote --exit-code --heads origin weather-data; then
+            echo "Branch weather-data exists on remote. Fetching and checking out..."
+            git fetch origin weather-data
+            git checkout weather-data
+            git reset --hard origin/weather-data
+          else
+            echo "Branch weather-data does not exist on remote. Creating orphan branch..."
+            git checkout --orphan weather-data
+            git rm -rf . 2>/dev/null || true
+          fi
+
+          # Place snapshot file into weather-data branch
+          cp /tmp/weather_snapshot.json weather_snapshot.json
+          git add -f weather_snapshot.json
+
+          # Commit only if changed
+          if git diff --staged --quiet; then
+            echo "No changes detected in weather_snapshot.json."
+          else
+            git commit -m "Update weather snapshot $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push origin weather-data
+          fi

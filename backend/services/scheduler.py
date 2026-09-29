@@ -96,14 +96,19 @@ class PipelineScheduler:
 
             for d in districts:
                 obs_data = weather_map.get(d.id)
-                has_valid_fetch = obs_data and obs_data.get("data_quality") == "VALID" and obs_data.get("temperature_c") is not None
+                data_qual = str(obs_data.get("data_quality", "")) if obs_data else ""
+                has_usable_weather = (
+                    obs_data is not None
+                    and (data_qual == "VALID" or data_qual.startswith("SNAPSHOT"))
+                    and obs_data.get("temperature_c") is not None
+                )
 
-                if not has_valid_fetch:
+                if not has_usable_weather:
                     failed_count += 1
                     # District fetch failed -> check for previous valid observation to preserve
                     last_obs = db.query(WeatherObservation).filter(
                         WeatherObservation.district_id == d.id,
-                        WeatherObservation.data_quality == "VALID"
+                        WeatherObservation.data_quality != "UNAVAILABLE"
                     ).order_by(WeatherObservation.created_at.desc()).first()
 
                     if last_obs:
@@ -120,10 +125,10 @@ class PipelineScheduler:
                     else:
                         # No prior valid data and fetch failed:
                         # Do NOT compute UTCI or thermal category from fallback defaults!
-                        logger.warning(f"No live or cached weather for district {d.name} ({d.id}). Skipping UTCI calculation.")
+                        logger.warning(f"No live, snapshot, or cached weather for district {d.name} ({d.id}). Skipping UTCI calculation.")
                         continue
 
-                # Save Valid Weather Observation
+                # Save Valid or Snapshot Weather Observation
                 weather_obs = WeatherObservation(
                     district_id=d.id,
                     timestamp_utc=obs_data["timestamp_utc"],
@@ -164,7 +169,7 @@ class PipelineScheduler:
                     utci_c=thermal_res["utci_c"],
                     utci_category=thermal_res["category_info"]["category"],
                     severity_rank=thermal_res["category_info"]["severity_rank"],
-                    data_quality="VALID",
+                    data_quality=obs_data.get("data_quality", "VALID"),
                     mode=mode
                 )
                 db.add(thermal_rec)

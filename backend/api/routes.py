@@ -179,12 +179,28 @@ def get_system_status(db: Session = Depends(get_db)):
     districts_count = db.query(District).count()
     active_alerts_count = db.query(Alert).filter(Alert.status == "ACTIVE", Alert.mode == mode).count()
     
-    # Calculate live districts with valid observation in database
+    # Calculate districts with valid or snapshot observation in database
     live_districts_count = db.query(WeatherObservation.district_id).filter(
-        WeatherObservation.data_quality == "VALID",
+        WeatherObservation.data_quality != "UNAVAILABLE",
         WeatherObservation.mode == mode
     ).distinct().count()
-    
+
+    from backend.services.snapshot_manager import snapshot_manager
+    snap_info = snapshot_manager.status_info
+
+    # Determine active weather data source
+    latest_obs = db.query(WeatherObservation).filter(
+        WeatherObservation.data_quality != "UNAVAILABLE",
+        WeatherObservation.mode == mode
+    ).order_by(WeatherObservation.created_at.desc()).first()
+
+    if latest_obs and str(latest_obs.data_quality).startswith("SNAPSHOT"):
+        weather_source = f"Weather Snapshot Fallback ({snap_info.get('source', 'GitHub')})"
+    elif latest_obs and latest_obs.data_quality == "VALID":
+        weather_source = "Open-Meteo REST (Direct Live Ingestion)"
+    else:
+        weather_source = f"Snapshot Standby ({snap_info.get('source', 'GitHub')})" if snap_info.get("status") != "UNAVAILABLE" else "Direct Open-Meteo"
+
     return {
         "app_name": settings.APP_NAME,
         "full_title": settings.FULL_TITLE,
@@ -200,6 +216,12 @@ def get_system_status(db: Session = Depends(get_db)):
         "last_successful_ingestion_ist": scheduler_instance.last_successful_run_ist,
         "pipeline_status": scheduler_instance.last_status,
         "weather_provider": "Open-Meteo REST (Non-commercial open tier)",
+        "weather_source": weather_source,
+        "snapshot": snap_info,
+        "snapshot_age_hours": snap_info.get("age_hours"),
+        "snapshot_source": snap_info.get("source"),
+        "snapshot_status": snap_info.get("status"),
+        "snapshot_fetched_at_ist": snap_info.get("fetched_at_ist"),
         "thermal_engine": "ECMWF thermofeel (Di Napoli et al. 2020 & Brode et al. 2012)",
         "mortality_model": {
             "status": "LOADED" if mortality_service.is_loaded else "UNAVAILABLE",

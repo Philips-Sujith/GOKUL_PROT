@@ -128,7 +128,18 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
                 return self._parse_current_payload(district["id"], data, dt_utc)
             raise ValueError("No data returned from Open-Meteo")
         except Exception as e:
-            logger.warning(f"Weather fetch notice for district {district.get('name')}: {e}")
+            logger.warning(f"Weather fetch notice for district {district.get('name')}: {e}. Checking snapshot fallback...")
+            try:
+                from backend.services.snapshot_manager import snapshot_manager
+                raw_data = snapshot_manager.get_district_raw(district["id"])
+                if raw_data and "current" in raw_data:
+                    parsed = self._parse_current_payload(district["id"], raw_data, dt_utc)
+                    parsed["data_quality"] = snapshot_manager.get_quality_label()
+                    parsed["source"] = f"Snapshot ({snapshot_manager.status_info.get('source', 'Fallback')})"
+                    return parsed
+            except Exception as snap_err:
+                logger.warning(f"Snapshot fallback error for district {district.get('name')}: {snap_err}")
+
             return {
                 "district_id": district["id"],
                 "timestamp_utc": dt_utc,
@@ -149,7 +160,7 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
     def fetch_all_districts_weather(self, districts: List[Dict[str, Any]], batch_size: int = 45) -> Dict[str, Dict[str, Any]]:
         """
         Batch-fetches weather for all districts with session pooling, larger batch coordinate requests,
-        exponential backoff on 429, and gentle inter-batch pacing.
+        exponential backoff on 429, gentle inter-batch pacing, and fallback to weather snapshot if needed.
         """
         import time
         results = {}
@@ -179,9 +190,20 @@ class OpenMeteoWeatherProvider(WeatherDataProvider):
                     raise ValueError(f"Unexpected response structure for batch: {type(data)}")
                         
             except Exception as e:
-                logger.warning(f"Batch fetch notice for batch {i//batch_size + 1}: {e}")
-                # Do NOT trigger a barrage of individual single-district requests!
+                logger.warning(f"Batch fetch notice for batch {i//batch_size + 1}: {e}. Checking snapshot fallback...")
+                from backend.services.snapshot_manager import snapshot_manager
                 for district in batch:
+                    try:
+                        raw_data = snapshot_manager.get_district_raw(district["id"])
+                        if raw_data and "current" in raw_data:
+                            parsed = self._parse_current_payload(district["id"], raw_data, dt_utc)
+                            parsed["data_quality"] = snapshot_manager.get_quality_label()
+                            parsed["source"] = f"Snapshot ({snapshot_manager.status_info.get('source', 'Fallback')})"
+                            results[district["id"]] = parsed
+                            continue
+                    except Exception as snap_err:
+                        logger.warning(f"Snapshot fallback error for {district.get('name')}: {snap_err}")
+
                     results[district["id"]] = {
                         "district_id": district["id"],
                         "timestamp_utc": dt_utc,

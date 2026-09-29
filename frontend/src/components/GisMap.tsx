@@ -358,6 +358,13 @@ export const GisMap: React.FC<GisMapProps> = ({
           <p className="text-[11px] text-slate-500 mt-0.5">
             South India Geographic Coverage: <strong>83 Districts</strong> (TN 38 • KL 14 • KA 31)
           </p>
+          {districts.some(d => d.thermal?.data_quality?.startsWith('SNAPSHOT')) && (
+            <div className="mt-1 flex items-center gap-1.5">
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+                ● Snapshot Active ({districts.find(d => d.thermal?.data_quality?.startsWith('SNAPSHOT'))?.timestamp_ist || 'Recent'})
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Visualization Mode Segmented Controls */}

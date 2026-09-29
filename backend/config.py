@@ -20,6 +20,10 @@ class Settings:
     # Open-Meteo
     OPEN_METEO_BASE_URL: str = os.getenv("OPEN_METEO_BASE_URL", "https://api.open-meteo.com/v1/forecast")
     WEATHER_REFRESH_INTERVAL_HOURS: int = int(os.getenv("WEATHER_REFRESH_INTERVAL_HOURS", "2"))
+    WEATHER_SNAPSHOT_URL: str = os.getenv(
+        "WEATHER_SNAPSHOT_URL",
+        "https://raw.githubusercontent.com/Philips-Sujith/GOKUL_PROT/weather-data/weather_snapshot.json"
+    )
     
     # Telegram
     TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()

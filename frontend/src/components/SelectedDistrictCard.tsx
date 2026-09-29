@@ -77,15 +77,22 @@ export const SelectedDistrictCard: React.FC<SelectedDistrictCardProps> = ({
         </div>
 
         {/* Quality status */}
-        <span className={`text-[11px] px-2 py-0.5 rounded-full font-semibold border ${
-          isUnavailable
-            ? 'bg-slate-100 text-slate-600 border-slate-300'
-            : thermal.data_quality === 'VALID'
-            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-            : 'bg-amber-50 text-amber-700 border-amber-200'
-        }`}>
-          ● {isUnavailable ? 'No live data' : (thermal.data_quality || 'VALID')}
-        </span>
+        <div className="flex flex-col items-end gap-1">
+          <span className={`text-[11px] px-2 py-0.5 rounded-full font-semibold border ${
+            isUnavailable
+              ? 'bg-slate-100 text-slate-600 border-slate-300'
+              : thermal.data_quality === 'VALID'
+              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+              : 'bg-amber-50 text-amber-700 border-amber-200'
+          }`}>
+            ● {isUnavailable ? 'No live data' : (thermal.data_quality || 'VALID')}
+          </span>
+          {thermal.data_quality?.startsWith('SNAPSHOT') && (
+            <span className="text-[10px] text-amber-700 font-medium">
+              Snapshot time: {timestamp_ist}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Hero Metric: UTCI & Human Thermal Stress Visual */}

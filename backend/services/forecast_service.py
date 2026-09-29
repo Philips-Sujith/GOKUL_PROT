@@ -250,7 +250,24 @@ class ForecastService:
             return forecast_res
 
         except Exception as e:
-            logger.error(f"Error fetching 3-day forecast for district {district.get('name')}: {e}")
+            logger.warning(f"Notice fetching 3-day forecast for district {district.get('name')}: {e}. Checking snapshot fallback...")
+            try:
+                from backend.services.snapshot_manager import snapshot_manager
+                raw_data = snapshot_manager.get_district_raw(district["id"])
+                if raw_data and "hourly" in raw_data:
+                    hourly = raw_data.get("hourly", {})
+                    forecast_res = self._process_hourly_data(district, hourly, is_demo=is_demo, demo_offset=demo_offset)
+                    qual_label = snapshot_manager.get_quality_label()
+                    forecast_res["data_quality"] = qual_label
+                    forecast_res["source"] = f"Snapshot ({snapshot_manager.status_info.get('source', 'Fallback')}) + ECMWF thermofeel"
+                    for day in forecast_res.get("days", []):
+                        day["data_quality"] = qual_label
+                    self._forecast_cache[cache_key] = forecast_res
+                    self._cache_timestamp[cache_key] = now_sec
+                    return forecast_res
+            except Exception as snap_err:
+                logger.warning(f"Snapshot fallback error for forecast {district.get('name')}: {snap_err}")
+
             if cache_key in self._forecast_cache:
                 cached = dict(self._forecast_cache[cache_key])
                 cached["data_quality"] = "STALE"
@@ -286,7 +303,7 @@ class ForecastService:
             }
 
     def fetch_all_forecasts(self, districts: List[Dict[str, Any]], is_demo: bool = False, demo_scenario: str = "HIGH_HEAT_STRESS", batch_size: int = 5) -> Dict[str, Dict[str, Any]]:
-        """Batch-fetches 3-day forecasts for all 83 districts."""
+        """Batch-fetches 3-day forecasts for all 83 districts with snapshot fallback."""
         results = {}
         now_sec = time.time()
 
@@ -345,8 +362,27 @@ class ForecastService:
                         results[district["id"]] = self.fetch_district_forecast(district, is_demo=is_demo, demo_scenario=demo_scenario)
 
             except Exception as e:
-                logger.error(f"Batch forecast fetch error for batch {i//batch_size + 1}: {e}")
+                logger.warning(f"Batch forecast fetch notice for batch {i//batch_size + 1}: {e}. Falling back to snapshot...")
+                from backend.services.snapshot_manager import snapshot_manager
                 for district in batch:
+                    try:
+                        raw_data = snapshot_manager.get_district_raw(district["id"])
+                        if raw_data and "hourly" in raw_data:
+                            hourly = raw_data.get("hourly", {})
+                            f_res = self._process_hourly_data(district, hourly, is_demo=is_demo, demo_offset=demo_offset)
+                            qual_label = snapshot_manager.get_quality_label()
+                            f_res["data_quality"] = qual_label
+                            f_res["source"] = f"Snapshot ({snapshot_manager.status_info.get('source', 'Fallback')}) + ECMWF thermofeel"
+                            for day in f_res.get("days", []):
+                                day["data_quality"] = qual_label
+                            cache_key = f"{district['id']}_{'DEMO_' + demo_scenario if is_demo else 'LIVE'}"
+                            self._forecast_cache[cache_key] = f_res
+                            self._cache_timestamp[cache_key] = now_sec
+                            results[district["id"]] = f_res
+                            continue
+                    except Exception as snap_err:
+                        logger.warning(f"Snapshot fallback error for {district.get('name')}: {snap_err}")
+
                     results[district["id"]] = self.fetch_district_forecast(district, is_demo=is_demo, demo_scenario=demo_scenario)
 
             time.sleep(0.15)

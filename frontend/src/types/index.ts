@@ -134,6 +134,18 @@ export interface SystemStatus {
   last_pipeline_run_ist: string;
   pipeline_status: string;
   weather_provider: string;
+  weather_source?: string;
+  snapshot?: {
+    status: string;
+    source: string;
+    age_hours?: number;
+    is_stale: boolean;
+    fetched_at_ist: string;
+    districts_count: number;
+  };
+  snapshot_age_hours?: number;
+  snapshot_source?: string;
+  snapshot_status?: string;
   thermal_engine: string;
   mortality_model: {
     status: string;

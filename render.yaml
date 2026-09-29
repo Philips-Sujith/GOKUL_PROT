@@ -16,6 +16,8 @@ services:
         value: https://api.open-meteo.com/v1/forecast
       - key: WEATHER_REFRESH_INTERVAL_HOURS
         value: "2"
+      - key: WEATHER_SNAPSHOT_URL
+        value: https://raw.githubusercontent.com/Philips-Sujith/GOKUL_PROT/weather-data/weather_snapshot.json
       - key: CORS_ORIGINS
         value: https://philips-sujith.github.io,http://localhost:5173,http://127.0.0.1:5173
       - key: ADMIN_USERNAME

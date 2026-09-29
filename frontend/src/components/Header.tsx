@@ -150,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
             <span className="hidden sm:inline">•</span>
             <span>
-              <strong className="text-slate-700">Weather Source:</strong> Open-Meteo REST API
+              <strong className="text-slate-700">Weather Source:</strong> {systemStatus?.weather_source || systemStatus?.weather_provider || 'Open-Meteo REST API'}
             </span>
           </div>
           <div>
